@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <executable name="dist/default/production/BigBrain_tester.X.production.elf">
+    <memory name="data">
+      <units>bytes</units>
+      <length>49152</length>
+      <used>774</used>
+      <free>48378</free>
+    </memory>
+    <memory name="program">
+      <units>bytes</units>
+      <length>499200</length>
+      <used>15630</used>
+      <free>483570</free>
+    </memory>
+  </executable>
+</project>

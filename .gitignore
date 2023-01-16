@@ -1,0 +1,6 @@
+build/
+nbproject/private/
+.generated_files/
+debug/
+*.mk
+*.properties
