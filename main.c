@@ -45,6 +45,8 @@
 /**
   Section: Included Files
 */
+#include <stdio.h>
+#include <string.h>
 #include "mcc_generated_files/system.h"
 #include "mcc_generated_files/tmr1.h"
 #include "mcc_generated_files/can_types.h"
@@ -53,6 +55,7 @@
 #include "mcc_generated_files/uart1.h"
 #include "mcc_generated_files/pin_manager.h"
 #include "mcc_generated_files/uart2.h"
+#include "mcc_generated_files/uart1.h"
 /*
                          Main application
  */
@@ -61,6 +64,7 @@ void CAN1_Receive_MSG(void);
 void CAN2_Receive_MSG(void);
 uint32_t SendLIN(uint8_t FrameID, uint8_t Length);
 uint8_t ManageLIN(uint8_t * Payload);
+void SendUart1(uint8_t *Fpu8String);
 
 volatile uint32_t BootRequest __attribute__((address(0x1080), persistent));
 const char __attribute__((address(0x280), space(prog))) text[128] = __DATE__" "__TIME__" : BigBrain tester software";
@@ -100,14 +104,16 @@ uint8_t Payload[6][8] = {{0}};
 
 uint8_t LIN_Payload[11];
 uint8_t Counter, MasterID, LINupdate;
-uint32_t TimerTick, Timeout_100ms, Timeout_10ms, Timeout_20ms;
+uint32_t TimerTick, Timeout_1000ms, Timeout_100ms, Timeout_10ms, Timeout_20ms;
 
 int main(void)
 {
+    uint8_t pu8String[256] = {0};
     TimerTick = 0;
     Counter = 0;
     MasterID = 0;
     LINupdate = 0;
+    BootRequest = 0;
     TMR1_SetInterruptHandler(My_IRS_TMR1);
     //initialize the device
     SYSTEM_Initialize();
@@ -139,23 +145,27 @@ int main(void)
     CAN2_TX.data[7] = 0x7;
     FPWM_SetHigh();
     LIN_CS_SetHigh();
+    
+    
+    sprintf((char *)pu8String, "Application start !\r\n");
+    SendUart1(pu8String);
 
     while (1)
     {
         LINupdate = ManageLIN(LIN_Payload);
-        if (TimerTick >= Timeout_10ms)
+        if (TimerTick > Timeout_10ms)
         {
             Timeout_10ms = TimerTick + 10;
             CAN1_Transmit(CAN_PRIORITY_MEDIUM, &CAN1_TX);
             CAN2_Transmit(CAN_PRIORITY_MEDIUM, &CAN2_TX);
         }
-        if (TimerTick >= Timeout_20ms)
+        if (TimerTick > Timeout_20ms)
         {
             Timeout_20ms = TimerTick + 20;
             MasterID++;
             SendLIN(0x0B, LIN_DLC_40);
         }
-        if (TimerTick >= Timeout_100ms)
+        if (TimerTick > Timeout_100ms)
         {
             Timeout_100ms = TimerTick + 100;
             Counter ++;
@@ -174,6 +184,12 @@ int main(void)
             CAN2_ACTV.data[0] = Counter;
             CAN1_Transmit(CAN_PRIORITY_LOW, &CAN1_ACTV);
             CAN2_Transmit(CAN_PRIORITY_LOW, &CAN2_ACTV);
+        }
+        if (TimerTick >Timeout_1000ms)
+        {
+            Timeout_1000ms = TimerTick + 1000;
+            sprintf((char *)pu8String, "Tick: %u\r\n", (uint16_t)TimerTick);
+            SendUart1(pu8String);
         }
     }
     return 1; 
@@ -255,6 +271,15 @@ uint8_t ManageLIN(uint8_t * Payload)
         }
     }
     return NewData;
+}
+
+void SendUart1(uint8_t *Fpu8String)
+{
+    while (*Fpu8String != 0)
+    {
+        UART1_Write(*Fpu8String);
+        Fpu8String++;
+    }
 }
 /**
  End of File
