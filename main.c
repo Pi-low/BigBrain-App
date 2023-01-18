@@ -62,9 +62,10 @@ void CAN2_Receive_MSG(void);
 uint32_t SendLIN(uint8_t FrameID, uint8_t Length);
 uint8_t ManageLIN(uint8_t * Payload);
 
-const char __attribute__((address(0x280), space(prog))) text[128] = __DATE__" "__TIME__" : BigBrain tester software, trick";
-//const uint16_t SWVersion __attribute__((address(0x300), space(prog))) = 0x0101;
-const uint16_t Trick __attribute__((address(0x37C), space(prog))) = 0xABCD;
+volatile uint32_t BootRequest __attribute__((address(0x1080), persistent));
+const char __attribute__((address(0x280), space(prog))) text[128] = __DATE__" "__TIME__" : BigBrain tester software";
+const uint16_t SWVersion __attribute__((address(0x300), space(prog))) = 0x0100;
+//const uint16_t Trick __attribute__((address(0x37C), space(prog))) = 0xABCD;
 
 enum
 {

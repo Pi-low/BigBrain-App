@@ -80,8 +80,8 @@ static bool volatile rxOverflowed;
  * when head == tail.  So full will result in head/tail being off by one due to
  * the extra byte.
  */
-#define UART1_CONFIG_TX_BYTEQ_LENGTH (8+1)
-#define UART1_CONFIG_RX_BYTEQ_LENGTH (8+1)
+#define UART1_CONFIG_TX_BYTEQ_LENGTH (128)
+#define UART1_CONFIG_RX_BYTEQ_LENGTH (128)
 
 /** UART Driver Queue
 
