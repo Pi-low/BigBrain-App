@@ -4,6 +4,29 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <logicalFolder name="01 - SRC" displayName="01 - SRC" projectFiles="true">
+        <logicalFolder name="01 - CONFIG" displayName="01 - CONFIG" projectFiles="true">
+          <itemPath>01 - SRC/01 - CONFIG/Config.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="02 - LIN_MNG"
+                       displayName="02 - LIN_MNG"
+                       projectFiles="true">
+          <itemPath>01 - SRC/02 - LIN_MNG/LIN_mng.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="03 - UTILS" displayName="03 - UTILS" projectFiles="true">
+          <itemPath>01 - SRC/03 - UTILS/Utils.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="04 - CAN_MNG"
+                       displayName="04 - CAN_MNG"
+                       projectFiles="true">
+          <itemPath>01 - SRC/04 - CAN_MNG/CAN_mng.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="05 - VERSION"
+                       displayName="05 - VERSION"
+                       projectFiles="true">
+          <itemPath>01 - SRC/05 - VERSION/Version.h</itemPath>
+        </logicalFolder>
+      </logicalFolder>
       <logicalFolder name="MCC Generated Files"
                      displayName="MCC Generated Files"
                      projectFiles="true">
@@ -32,11 +55,34 @@
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
                    projectFiles="true">
-      <itemPath>01-SRC/00-LINKER/Linker_App.gld</itemPath>
+      <itemPath>02 - LINKER/Linker_App.gld</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <logicalFolder name="01 - SRC" displayName="01 - SRC" projectFiles="true">
+        <logicalFolder name="01 - CONFIG" displayName="01 - CONFIG" projectFiles="true">
+        </logicalFolder>
+        <logicalFolder name="02 - LIN_MNG"
+                       displayName="02 - LIN_MNG"
+                       projectFiles="true">
+          <itemPath>01 - SRC/02 - LIN_MNG/LIN_mng.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="03 - UTILS" displayName="03 - UTILS" projectFiles="true">
+          <itemPath>01 - SRC/03 - UTILS/Utils.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="04 - CAN_MNG"
+                       displayName="04 - CAN_MNG"
+                       projectFiles="true">
+          <itemPath>01 - SRC/04 - CAN_MNG/CAN_mng.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="05 - VERSION"
+                       displayName="05 - VERSION"
+                       projectFiles="true">
+          <itemPath>01 - SRC/05 - VERSION/Version.c</itemPath>
+        </logicalFolder>
+        <itemPath>01 - SRC/main.c</itemPath>
+      </logicalFolder>
       <logicalFolder name="MCC Generated Files"
                      displayName="MCC Generated Files"
                      projectFiles="true">
@@ -55,7 +101,6 @@
         <itemPath>mcc_generated_files/can1.c</itemPath>
         <itemPath>mcc_generated_files/can2.c</itemPath>
       </logicalFolder>
-      <itemPath>main.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -66,6 +111,8 @@
   </logicalFolder>
   <sourceRootList>
     <Elem>01-SRC/00-LINKER</Elem>
+    <Elem>01 - SRC</Elem>
+    <Elem>02 - LINKER</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -75,7 +122,7 @@
         <targetDevice>dsPIC33EP512GM604</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>ICD3PlatformTool</platformTool>
+        <platformTool>noID</platformTool>
         <languageToolchain>XC16</languageToolchain>
         <languageToolchainVersion>2.00</languageToolchainVersion>
         <platform>3</platform>
@@ -226,7 +273,8 @@
       </C30-LD>
       <C30Global>
         <property key="combine-sourcefiles" value="false"/>
-        <property key="common-include-directories" value=""/>
+        <property key="common-include-directories"
+                  value="01 - SRC;01 - SRC\01 - CONFIG;01 - SRC\02 - LIN_MNG;01 - SRC\03 - UTILS;01 - SRC\04 - CAN_MNG;01 - SRC\05 - VERSION"/>
         <property key="dual-boot-partition" value="0"/>
         <property key="fast-math" value="false"/>
         <property key="generic-16-bit" value="false"/>
@@ -293,7 +341,6 @@
         <property key="debugoptions.debug-startup" value="Use system settings"/>
         <property key="debugoptions.reset-behaviour" value="Use system settings"/>
         <property key="debugoptions.useswbreakpoints" value="false"/>
-        <property key="firmware.download.all" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="false"/>

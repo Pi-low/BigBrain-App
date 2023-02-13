@@ -14,6 +14,8 @@
             <make-dep-projects/>
             <sourceRootList>
                 <sourceRootElem>01-SRC/00-LINKER</sourceRootElem>
+                <sourceRootElem>01 - SRC</sourceRootElem>
+                <sourceRootElem>02 - LINKER</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

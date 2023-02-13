@@ -47,15 +47,9 @@
 */
 #include <stdio.h>
 #include <string.h>
-#include "mcc_generated_files/system.h"
-#include "mcc_generated_files/tmr1.h"
-#include "mcc_generated_files/can_types.h"
-#include "mcc_generated_files/can1.h"
-#include "mcc_generated_files/can2.h"
-#include "mcc_generated_files/uart1.h"
-#include "mcc_generated_files/pin_manager.h"
-#include "mcc_generated_files/uart2.h"
-#include "mcc_generated_files/uart1.h"
+#include "../mcc_generated_files/mcc.h"
+#include "01 - CONFIG/Config.h"
+#include "05 - VERSION/Version.h"
 /*
                          Main application
  */
@@ -65,11 +59,6 @@ void CAN2_Receive_MSG(void);
 uint32_t SendLIN(uint8_t FrameID, uint8_t Length);
 uint8_t ManageLIN(uint8_t * Payload);
 void SendUart1(uint8_t *Fpu8String);
-
-volatile uint32_t BootRequest __attribute__((address(0x1080), persistent));
-const char __attribute__((address(0x280), space(prog))) text[128] = __DATE__" "__TIME__" : BigBrain tester software";
-const uint16_t SWVersion __attribute__((address(0x300), space(prog))) = 0x0100;
-//const uint16_t Trick __attribute__((address(0x37C), space(prog))) = 0xABCD;
 
 enum
 {
@@ -113,7 +102,6 @@ int main(void)
     Counter = 0;
     MasterID = 0;
     LINupdate = 0;
-    BootRequest = 0;
     TMR1_SetInterruptHandler(My_IRS_TMR1);
     //initialize the device
     SYSTEM_Initialize();
