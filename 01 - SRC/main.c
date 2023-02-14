@@ -45,18 +45,16 @@
 /**
   Section: Included Files
 */
-#include <stdio.h>
-#include <string.h>
-#include "../mcc_generated_files/mcc.h"
 #include "01 - CONFIG/Config.h"
+#include "02 - LIN_MNG/LIN_mng.h"
+#include "03 - UTILS/Utils.h"
+#include "04 - CAN_MNG/CAN_mng.h"
 #include "05 - VERSION/Version.h"
 /*
                          Main application
  */
 void My_IRS_TMR1(void);
-void CAN1_Receive_MSG(void);
-void CAN2_Receive_MSG(void);
-uint32_t SendLIN(uint8_t FrameID, uint8_t Length);
+uint32_t SendLIN(uint8_t FrameID);
 uint8_t ManageLIN(uint8_t * Payload);
 void SendUart1(uint8_t *Fpu8String);
 
@@ -70,13 +68,6 @@ enum
     CAN2_RX_DATA = 5
 };
 
-enum
-{
-    LIN_DLC_20 = 0b00,
-    LIN_DLC_21 = 0b01,
-    LIN_DLC_40 = 0b10,
-    LIN_DLC_80 = 0b11
-};
 
 typedef struct
 {
@@ -105,14 +96,6 @@ int main(void)
     TMR1_SetInterruptHandler(My_IRS_TMR1);
     //initialize the device
     SYSTEM_Initialize();
-    
-    CAN1_TransmitEnable();
-    CAN1_ReceiveEnable();
-    CAN2_TransmitEnable();
-    CAN2_ReceiveEnable();
-    
-    CAN1_SetRxBufferInterruptHandler(&CAN1_Receive_MSG);
-    CAN2_SetRxBufferInterruptHandler(&CAN2_Receive_MSG);
     
     TMR1_Start();
     
@@ -151,7 +134,7 @@ int main(void)
         {
             Timeout_20ms = TimerTick + 20;
             MasterID++;
-            SendLIN(0x0B, LIN_DLC_40);
+            SendLIN(0x0B);
         }
         if (TimerTick > Timeout_100ms)
         {
@@ -188,35 +171,12 @@ void My_IRS_TMR1(void)
     TimerTick++;
 }
 
-void CAN1_Receive_MSG(void)
-{
-    if(CAN1_Receive(&CAN1_RX))
-    {
-        if(CAN1_RX.msgId == 0x1A)
-        {
-            CAN2_TX.data[7] = CAN1_RX.data[7];
-        }
-    }
-}
-
-void CAN2_Receive_MSG(void)
-{
-    if(CAN2_Receive(&CAN2_RX))
-    {
-        if(CAN2_RX.msgId == 0x2B)
-        {
-            CAN1_TX.data[7] = CAN2_RX.data[7];
-        }
-    }
-}
-
 uint32_t SendLIN(uint8_t FrameID, uint8_t Length)
 {
     uint8_t PID, P0, P1, Checksum;
     uint32_t RxTimeout = TimerTick + 10;
     
-    PID = FrameID & 0x0F;
-    PID |= (Length << 4) & 0x30;
+    PID = FrameID & 0x3F;
     
     P0 = (PID & 1);
     P0 ^= (PID >> 1) & 1;

@@ -25,18 +25,52 @@
 /******************************************************************************
  * Includes
  *****************************************************************************/
-#include <stdio.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include "../../mcc_generated_files/mcc.h"
+#include <xc.h>
 #include "../01 - CONFIG/Config.h"
+#include "../07 - APP/App.h"
 #include "CAN_mng.h"
 
 /******************************************************************************
- * Static definitions
+ * Private variable definitions
  *****************************************************************************/
 
+/******************************************************************************
+ * Private function prototypes
+ *****************************************************************************/
+static void CAN1_Receive_MSG(void);
+static void CAN2_Receive_MSG(void);
+
+/**
+ * 
+ */
 void CAN_mng_Init(void)
 {
-    
+    CAN1_TransmitEnable();
+    CAN1_ReceiveEnable();
+    CAN2_TransmitEnable();
+    CAN2_ReceiveEnable();
+    CAN1_SetRxBufferInterruptHandler(&CAN1_Receive_MSG);
+    CAN2_SetRxBufferInterruptHandler(&CAN2_Receive_MSG);
+}
+
+void CAN1_Receive_MSG(void)
+{
+    if(CAN1_Receive(&CAN1_RX))
+    {
+        if(CAN1_RX.msgId == 0x1A)
+        {
+            CAN2_TX.data[7] = CAN1_RX.data[7];
+        }
+    }
+}
+
+void CAN2_Receive_MSG(void)
+{
+    if(CAN2_Receive(&CAN2_RX))
+    {
+        if(CAN2_RX.msgId == 0x2B)
+        {
+            CAN1_TX.data[7] = CAN2_RX.data[7];
+        }
+    }
 }

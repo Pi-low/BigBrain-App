@@ -28,10 +28,32 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include "../../mcc_generated_files/mcc.h"
 #include "../01 - CONFIG/Config.h"
 #include "Utils.h"
 
 /******************************************************************************
- * Static definitions
+ * Private variable definitions
  *****************************************************************************/
+
+/******************************************************************************
+ * Private function prototypes
+ *****************************************************************************/
+
+void Utils_PrintStr(const uint8_t * Fpu8Str)
+{
+    uint8_t *pu8Tmp = Fpu8Str;
+    while (*pu8Tmp != '\0')
+    {
+        UART1_Write((uint8_t) *pu8Tmp);
+        pu8Tmp++;
+    }
+}
+
+void Utils_PrintStrSize(const uint8_t * Fpu8Str, uint32_t Fu32Len)
+{
+    uint32_t u32Cnt = 0;
+    for (u32Cnt = 0; u32Cnt < Fu32Len; u32Cnt++)
+    {
+        UART1_Write((uint8_t) *(Fpu8Str + u32Cnt));
+    }
+}

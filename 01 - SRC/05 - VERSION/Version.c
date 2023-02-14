@@ -25,5 +25,13 @@
 #include <stdint.h>
 #include "Version.h"
 
+/******************************************************************************
+ * Private variable definitions
+ *****************************************************************************/
+
+/******************************************************************************
+ * Private function prototypes
+ *****************************************************************************/
+
 const char __attribute__((address(0x280), space(prog))) text[128] = __DATE__" "__TIME__" : BigBrain tester software";
 const uint16_t SWVersion __attribute__((address(0x300), space(prog))) = 0x0100;
