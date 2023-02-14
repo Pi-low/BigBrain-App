@@ -7,6 +7,7 @@
       <logicalFolder name="01 - SRC" displayName="01 - SRC" projectFiles="true">
         <logicalFolder name="01 - CONFIG" displayName="01 - CONFIG" projectFiles="true">
           <itemPath>01 - SRC/01 - CONFIG/Config.h</itemPath>
+          <itemPath>01 - SRC/01 - CONFIG/Types.h</itemPath>
         </logicalFolder>
         <logicalFolder name="02 - LIN_MNG"
                        displayName="02 - LIN_MNG"
@@ -25,6 +26,14 @@
                        displayName="05 - VERSION"
                        projectFiles="true">
           <itemPath>01 - SRC/05 - VERSION/Version.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="06 - SYSTEM" displayName="06 - SYSTEM" projectFiles="true">
+          <itemPath>01 - SRC/06 - SYSTEM/Task_mng.h</itemPath>
+          <itemPath>01 - SRC/06 - SYSTEM/Scheduler.h</itemPath>
+          <itemPath>01 - SRC/06 - SYSTEM/SystemTicks.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="07 - APP" displayName="07 - APP" projectFiles="true">
+          <itemPath>01 - SRC/07 - APP/App.h</itemPath>
         </logicalFolder>
       </logicalFolder>
       <logicalFolder name="MCC Generated Files"
@@ -80,6 +89,14 @@
                        displayName="05 - VERSION"
                        projectFiles="true">
           <itemPath>01 - SRC/05 - VERSION/Version.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="06 - SYSTEM" displayName="06 - SYSTEM" projectFiles="true">
+          <itemPath>01 - SRC/06 - SYSTEM/Task_mng.c</itemPath>
+          <itemPath>01 - SRC/06 - SYSTEM/Scheduler.c</itemPath>
+          <itemPath>01 - SRC/06 - SYSTEM/SystemTicks.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="07 - APP" displayName="07 - APP" projectFiles="true">
+          <itemPath>01 - SRC/07 - APP/App.c</itemPath>
         </logicalFolder>
         <itemPath>01 - SRC/main.c</itemPath>
       </logicalFolder>

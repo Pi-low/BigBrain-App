@@ -3,7 +3,7 @@
     <type>com.microchip.mplab.nbide.embedded.makeproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
-            <name>BigBrain_tester</name>
+            <name>BigBrainApp</name>
             <creation-uuid>5be5a58f-b793-41e1-aa30-6321faa4f728</creation-uuid>
             <make-project-type>0</make-project-type>
             <c-extensions>c</c-extensions>
