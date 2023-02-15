@@ -59,24 +59,12 @@ void CAN_mng_Init(void)
 
 void CAN1_Receive_MSG(void)
 {
-    if(CAN1_Receive(&CAN1_RX))
-    {
-        if(CAN1_RX.msgId == 0x1A)
-        {
-            CAN2_TX.data[7] = CAN1_RX.data[7];
-        }
-    }
+    
 }
 
 void CAN2_Receive_MSG(void)
 {
-    if(CAN2_Receive(&CAN2_RX))
-    {
-        if(CAN2_RX.msgId == 0x2B)
-        {
-            CAN1_TX.data[7] = CAN2_RX.data[7];
-        }
-    }
+
 }
 
 /******************************************************************************

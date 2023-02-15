@@ -30,8 +30,9 @@
 #include "../../mcc_generated_files/tmr1.h"
 #include "../../mcc_generated_files/uart1.h"
 #include "../../mcc_generated_files/uart2.h"
+#include "../../mcc_generated_files/can_types.h"
 #include "../../mcc_generated_files/can1.h"
-#include "../../mcc_generated_files/can2.h
+#include "../../mcc_generated_files/can2.h"
 
 /******************************************************************************
  * Definitions and macros

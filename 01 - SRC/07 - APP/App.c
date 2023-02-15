@@ -31,10 +31,17 @@
 #include <xc.h>
 #include "../01 - CONFIG/Config.h"
 #include "../01 - CONFIG/Types.h"
+#include "../06 - SYSTEM/SystemTicks.h"
+#include "App.h"
 
 /******************************************************************************
  * Private variable definitions
  *****************************************************************************/
+static CAN_MSG_FIELD stnCanMsgField_std;
+static CAN_MSG_OBJ stsTxVehicle;
+static CAN_MSG_OBJ stsTxSeat;
+static uint8_t pu8TxDataVehicle[8];
+static uint8_t pu8TxDataSeat[8];
 
 /******************************************************************************
  * Private function prototypes
@@ -43,6 +50,23 @@
 /******************************************************************************
  * Public APIs & functions
  *****************************************************************************/
+void App_Init(void)
+{
+    stnCanMsgField_std.frameType = CAN_FRAME_DATA;
+    stnCanMsgField_std.idType = CAN_FRAME_STD;
+    stnCanMsgField_std.dlc = 8;
+    
+    stsTxVehicle.field = stnCanMsgField_std;
+    stsTxVehicle.data = pu8TxDataVehicle;
+    
+    stsTxSeat.field = stnCanMsgField_std;
+    stsTxSeat.data = pu8TxDataSeat;
+}
+
+void App_TxData_100ms(void)
+{
+    
+}
 
 /******************************************************************************
  * Private functions

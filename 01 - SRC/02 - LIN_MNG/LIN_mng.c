@@ -46,6 +46,15 @@ void LIN_SendPayload(tsLinFrame *FptsFrame);
 /******************************************************************************
  * Public APIs & functions
  *****************************************************************************/
+void LIN_EnableHW(void)
+{
+    LIN_CS_SetHigh();
+}
+
+void LIN_DisableHW(void)
+{
+    LIN_CS_SetLow();
+}
 
 /******************************************************************************
  * Private functions

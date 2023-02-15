@@ -45,8 +45,9 @@
  *****************************************************************************/
 void Utils_PrintStr(const uint8_t * Fpu8Str)
 {
-    uint8_t *pu8Tmp = Fpu8Str;
-    while (*pu8Tmp != '\0')
+    uint8_t *pu8Tmp = NULL;
+    pu8Tmp = Fpu8Str;
+    while ((*(pu8Tmp) != '\0') && (pu8Tmp != NULL))
     {
         UART1_Write((uint8_t) *pu8Tmp);
         pu8Tmp++;

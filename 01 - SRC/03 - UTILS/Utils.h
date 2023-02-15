@@ -11,7 +11,7 @@
 /******************************************************************************
  * Includes
  *****************************************************************************/
-#include <stdint.h>"
+#include <stdint.h>
 #include "../01 - CONFIG/Config.h"
 
 #define DmPrintDebug(str) Utils_PrintStr(str)

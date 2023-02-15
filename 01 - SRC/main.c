@@ -51,85 +51,17 @@
 #include "04 - CAN_MNG/CAN_mng.h"
 #include "05 - VERSION/Version.h"
 #include "06 - SYSTEM/Scheduler.h"
+#include "06 - SYSTEM/SystemTicks.h"
+#include "07 - APP/App.h"
 /*
                          Main application
  */
-void My_IRS_TMR1(void);
-uint32_t SendLIN(uint8_t FrameID);
-uint8_t ManageLIN(uint8_t * Payload);
-void SendUart1(uint8_t *Fpu8String);
-
-enum
-{
-    CAN1_ACTV_DATA = 0,
-    CAN2_ACTV_DATA = 1,
-    CAN1_TX_DATA = 2,
-    CAN2_TX_DATA = 3,
-    CAN1_RX_DATA = 4,
-    CAN2_RX_DATA = 5
-};
-
-
-typedef struct
-{
-    uint8_t SendFlag;
-    uint32_t Timeout;
-}LIN_Flags_t;
-
-CAN_MSG_OBJ CAN1_RX, CAN1_TX, CAN2_RX, CAN2_TX, CAN1_ACTV, CAN2_ACTV;
-CAN_MSG_FIELD StdField;
-LIN_Flags_t MyLINStatus;
-const uint8_t GEN_0 = 0b010111;
-const uint8_t GEN_1 = 0b111010;
-uint8_t Payload[6][8] = {{0}};
-
-uint8_t LIN_Payload[11];
-uint8_t Counter, MasterID, LINupdate;
-uint32_t TimerTick, Timeout_1000ms, Timeout_100ms, Timeout_10ms, Timeout_20ms;
 
 int main(void)
 {
+    SYSTEM_Initialize();
+    SystemTicks_Init();
     Scheduler_mng();
-    while (1)
-    {
-        LINupdate = ManageLIN(LIN_Payload);
-        if (TimerTick > Timeout_10ms)
-        {
-            Timeout_10ms = TimerTick + 10;
-            CAN1_Transmit(CAN_PRIORITY_MEDIUM, &CAN1_TX);
-            CAN2_Transmit(CAN_PRIORITY_MEDIUM, &CAN2_TX);
-        }
-        if (TimerTick > Timeout_20ms)
-        {
-            Timeout_20ms = TimerTick + 20;
-            MasterID++;
-            SendLIN(0x0B);
-        }
-        if (TimerTick > Timeout_100ms)
-        {
-            Timeout_100ms = TimerTick + 100;
-            Counter ++;
-            if (LINupdate != 0)
-            {
-                CAN2_ACTV.data[1] = LIN_Payload[1];
-                CAN2_ACTV.data[2] = LIN_Payload[2];
-                CAN2_ACTV.data[3] = LIN_Payload[3];
-                CAN2_ACTV.data[4] = LIN_Payload[4];
-                CAN2_ACTV.data[5] = LIN_Payload[5];
-                CAN2_ACTV.data[6] = LIN_Payload[6];
-                CAN2_ACTV.data[7] = LIN_Payload[7];
-                LINupdate = 0;
-            }
-            CAN1_ACTV.data[0] = Counter;
-            CAN2_ACTV.data[0] = Counter;
-            CAN1_Transmit(CAN_PRIORITY_LOW, &CAN1_ACTV);
-            CAN2_Transmit(CAN_PRIORITY_LOW, &CAN2_ACTV);
-        }
-        if (TimerTick >Timeout_1000ms)
-        {
-        }
-    }
-    return 1; 
 }
 /**
  End of File
