@@ -29,6 +29,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include "../01 - CONFIG/Config.h"
+#include "../01 - CONFIG/Types.h"
 #include "Utils.h"
 
 /******************************************************************************
@@ -39,6 +40,9 @@
  * Private function prototypes
  *****************************************************************************/
 
+/******************************************************************************
+ * Public APIs & functions
+ *****************************************************************************/
 void Utils_PrintStr(const uint8_t * Fpu8Str)
 {
     uint8_t *pu8Tmp = Fpu8Str;
@@ -57,3 +61,7 @@ void Utils_PrintStrSize(const uint8_t * Fpu8Str, uint32_t Fu32Len)
         UART1_Write((uint8_t) *(Fpu8Str + u32Cnt));
     }
 }
+
+/******************************************************************************
+ * Private functions
+ *****************************************************************************/

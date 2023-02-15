@@ -30,6 +30,7 @@
 #include <stdint.h>
 #include <xc.h>
 #include "../01 - CONFIG/Config.h"
+#include "../01 - CONFIG/Types.h"
 #include "SystemTicks.h"
 
 /******************************************************************************
@@ -43,7 +44,7 @@ static uint32_t su32SysTick;
 static void SystemTicks_TimerCallback(void);
 
 /******************************************************************************
- * Public APIs
+ * Public APIs & functions
  *****************************************************************************/
 void SystemTicks_Init(void)
 {

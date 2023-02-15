@@ -50,6 +50,7 @@
 #include "03 - UTILS/Utils.h"
 #include "04 - CAN_MNG/CAN_mng.h"
 #include "05 - VERSION/Version.h"
+#include "06 - SYSTEM/Scheduler.h"
 /*
                          Main application
  */
@@ -88,39 +89,7 @@ uint32_t TimerTick, Timeout_1000ms, Timeout_100ms, Timeout_10ms, Timeout_20ms;
 
 int main(void)
 {
-    uint8_t pu8String[256] = {0};
-    TimerTick = 0;
-    Counter = 0;
-    MasterID = 0;
-    LINupdate = 0;
-    TMR1_SetInterruptHandler(My_IRS_TMR1);
-    //initialize the device
-    SYSTEM_Initialize();
-    
-    TMR1_Start();
-    
-    StdField.idType = CAN_FRAME_STD;
-    StdField.frameType = CAN_FRAME_DATA;
-    StdField.dlc = 8;
-    
-    CAN1_ACTV = (CAN_MSG_OBJ) {0xC1, StdField, Payload[CAN1_ACTV_DATA]};
-    CAN2_ACTV = (CAN_MSG_OBJ) {0xC2, StdField, Payload[CAN2_ACTV_DATA]};
-    
-    CAN1_TX =   (CAN_MSG_OBJ) {0x1B, StdField, Payload[CAN1_TX_DATA]};
-    CAN2_TX =   (CAN_MSG_OBJ) {0x2A, StdField, Payload[CAN2_TX_DATA]};
-    
-    CAN1_RX.data = Payload[CAN1_RX_DATA];
-    CAN2_RX.data = Payload[CAN2_RX_DATA];
-    
-    CAN1_TX.data[7] = 0x7;
-    CAN2_TX.data[7] = 0x7;
-    FPWM_SetHigh();
-    LIN_CS_SetHigh();
-    
-    
-    sprintf((char *)pu8String, "Application start !\r\n");
-    SendUart1(pu8String);
-
+    Scheduler_mng();
     while (1)
     {
         LINupdate = ManageLIN(LIN_Payload);
@@ -158,76 +127,9 @@ int main(void)
         }
         if (TimerTick >Timeout_1000ms)
         {
-            Timeout_1000ms = TimerTick + 1000;
-            sprintf((char *)pu8String, "Tick: %u\r\n", (uint16_t)TimerTick);
-            SendUart1(pu8String);
         }
     }
     return 1; 
-}
-
-void My_IRS_TMR1(void)
-{
-    TimerTick++;
-}
-
-uint32_t SendLIN(uint8_t FrameID, uint8_t Length)
-{
-    uint8_t PID, P0, P1, Checksum;
-    uint32_t RxTimeout = TimerTick + 10;
-    
-    PID = FrameID & 0x3F;
-    
-    P0 = (PID & 1);
-    P0 ^= (PID >> 1) & 1;
-    P0 ^= (PID >> 2) & 1;
-    P0 ^= (PID >> 4) & 1;
-    
-    P1 = (PID >> 1) & 1;
-    P1 ^= (PID >> 3) & 1;
-    P1 ^= (PID >> 4) & 1;
-    P1 ^= (PID >> 5) & 1;
-    P1 ^= 1;
-    
-    PID |= (P0 & 1) << 6;
-    PID |= (P1 & 1) << 7;
-    //Checksum = Payload[0] + Payload[1] + PID;
-    //Checksum ^= 0xFF;
-    
-    U2STAbits.UTXBRK = 1;
-    UART2_Write(0); /* Break */
-    UART2_Write(0x55); /* Sync byte */
-    UART2_Write(PID);
-    return RxTimeout;
-}
-uint8_t ManageLIN(uint8_t * Payload)
-{
-    uint8_t i;
-    uint8_t NewData = 0;
-    if (TimerTick >= MyLINStatus.Timeout)
-    {
-        for (i = 0; i < 11; i++)
-        {
-            Payload[i] = 0;
-        }
-        i = 0;
-        while ((i < 11) && UART2_IsRxReady())
-        {
-            Payload[i] = UART2_Read();
-            i++;
-            NewData = 1;
-        }
-    }
-    return NewData;
-}
-
-void SendUart1(uint8_t *Fpu8String)
-{
-    while (*Fpu8String != 0)
-    {
-        UART1_Write(*Fpu8String);
-        Fpu8String++;
-    }
 }
 /**
  End of File

@@ -29,9 +29,11 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <xc.h>
+#include "../01 - CONFIG/Config.h"
+#include "../01 - CONFIG/Types.h"
 #include "SystemTicks.h"
-#include "Scheduler.h"
 #include "Task_mng.h"
+#include "Scheduler.h"
 
 /******************************************************************************
  * Private variable definitions
@@ -43,7 +45,7 @@ static uint32_t su32Timeout_5ms = 0, su32Timeout_10ms = 0, su32Timeout_100ms = 0
  *****************************************************************************/
 
 /******************************************************************************
- * Public APIs
+ * Public APIs & functions
  *****************************************************************************/
 void Scheduler_mng(void)
 {
@@ -74,3 +76,7 @@ void Scheduler_mng(void)
         }
     };
 }
+
+/******************************************************************************
+ * Private functions
+ *****************************************************************************/
