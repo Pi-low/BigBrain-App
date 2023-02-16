@@ -28,6 +28,7 @@
 #include <xc.h>
 #include "../01 - CONFIG/Config.h"
 #include "../01 - CONFIG/Types.h"
+#include "../07 - APP/App.h"
 #include "CAN_mng.h"
 
 /******************************************************************************
@@ -37,8 +38,6 @@
 /******************************************************************************
  * Private function prototypes
  *****************************************************************************/
-static void CAN1_Receive_MSG(void);
-static void CAN2_Receive_MSG(void);
 
 /******************************************************************************
  * Public APIs & functions
@@ -53,18 +52,8 @@ void CAN_mng_Init(void)
     CAN1_ReceiveEnable();
     CAN2_TransmitEnable();
     CAN2_ReceiveEnable();
-    CAN1_SetRxBufferInterruptHandler(&CAN1_Receive_MSG);
-    CAN2_SetRxBufferInterruptHandler(&CAN2_Receive_MSG);
-}
-
-void CAN1_Receive_MSG(void)
-{
-    
-}
-
-void CAN2_Receive_MSG(void)
-{
-
+    CAN1_SetRxBufferInterruptHandler(&App_CbOnCanVehicleRx);
+    CAN2_SetRxBufferInterruptHandler(&App_CbOnCanSeatRx);
 }
 
 /******************************************************************************

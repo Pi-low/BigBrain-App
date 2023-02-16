@@ -44,6 +44,8 @@ typedef enum
 /******************************************************************************
  * Public function prototypes
  *****************************************************************************/
+void LIN_EnableHW(void);
+void LIN_DisableHW(void);
 void LIN_SendHeader(tsLinFrame *FptsFrame);
 
 #endif	/* LIN_MNG_H */
