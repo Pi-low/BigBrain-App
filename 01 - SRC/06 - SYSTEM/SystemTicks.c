@@ -48,7 +48,7 @@ static void SystemTicks_TimerCallback(void);
  *****************************************************************************/
 void SystemTicks_Init(void)
 {
-    TMR1_SetInterruptHandler(SystemTicks_TimerCallback);
+    TMR1_SetInterruptHandler(&SystemTicks_TimerCallback);
     TMR1_Start();
 }
 
@@ -63,4 +63,5 @@ uint32_t SystemTicks_Get(void)
 void SystemTicks_TimerCallback(void)
 {
     su32SysTick++;
+    TMR1_Start();
 }

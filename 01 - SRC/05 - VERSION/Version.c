@@ -33,5 +33,5 @@
  * Private function prototypes
  *****************************************************************************/
 
-const char __attribute__((address(0x280), space(prog))) text[128] = __DATE__" "__TIME__" : BigBrain tester software";
-const uint8_t SW_MajVersion __attribute__((address(0x300), space(prog))) = ((SW_VERSION_MAJ << 8) & 0xFF00) | SW_VERSION_MIN;
+const char __attribute__((address(0x280), space(prog))) SWDescription[128] = __DATE__" "__TIME__" : BigBrain tester software";
+const uint16_t SWVersion __attribute__((address(0x300), space(prog))) = SW_VERSION;

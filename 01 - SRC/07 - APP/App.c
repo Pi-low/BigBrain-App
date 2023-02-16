@@ -28,9 +28,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
 #include <xc.h>
 #include "../01 - CONFIG/Config.h"
 #include "../01 - CONFIG/Types.h"
+#include "../05 - VERSION/Version.h"
 #include "../03 - UTILS/Utils.h"
 #include "../06 - SYSTEM/SystemTicks.h"
 #include "App.h"
@@ -83,6 +85,8 @@ void App_Init(void)
     s832Timeout2 = 0;
     su8Flag1 = 0;
     su8Flag2 = 0;
+    
+    Utils_PrintStr("\r\n------------------------------------\r\n   APPLICATION START\r\n------------------------------------\r\n");
 }
 
 void App_CbOnCanVehicleRx(void)
@@ -154,6 +158,13 @@ void App_RunTask10ms(void)
             Utils_PrintStr("Low speed CAN side rx ON\r\n");
         }
     }
+}
+
+void App_RunTask1000ms(void)
+{
+    char pcStr[50];
+    sprintf(pcStr, "Current tick: %u\r\n", SystemTicks_Get());
+    Utils_PrintStr(pcStr);
 }
 
 /******************************************************************************

@@ -45,6 +45,7 @@ void App_Init(void);
 void App_CbOnCanVehicleRx(void);
 void App_CbOnCanSeatRx(void);
 void App_RunTask100ms(void);
+void App_RunTask1000ms(void);
 
 #endif	/* APP_H */
 

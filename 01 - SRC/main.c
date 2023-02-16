@@ -57,7 +57,7 @@
                          Main application
  */
 
-int main(void)
+void main(void)
 {
     SYSTEM_Initialize();
     SystemTicks_Init();
