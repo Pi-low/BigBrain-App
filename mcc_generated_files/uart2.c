@@ -50,6 +50,7 @@
 #include <stddef.h>
 #include "xc.h"
 #include "uart2.h"
+#include "../01 - SRC/02 - LIN_MNG/LIN_mng.h"
 
 /**
   Section: Data Type Definitions
@@ -240,6 +241,11 @@ void __attribute__ ( ( interrupt, no_auto_psv ) ) _U2ErrInterrupt( void )
     if ((U2STAbits.OERR == 1))
     {
         U2STAbits.OERR = 0;
+    }
+    if (U2STAbits.FERR == 1)
+    {
+        LIN_CbSoF();
+        U2STAbits.FERR = 0;
     }
     
     IFS4bits.U2EIF = 0;

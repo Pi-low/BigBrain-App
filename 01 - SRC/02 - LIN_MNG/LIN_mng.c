@@ -35,6 +35,8 @@
 /******************************************************************************
  * Private variable definitions
  *****************************************************************************/
+static uint8_t spu8LinRxBuffer[10];
+static uint8_t su8ByteCnt;
 //static tsLinFrame stsLinFrame_Registered[NB_LIN_FRAMES];
 
 /******************************************************************************
@@ -42,10 +44,17 @@
  *****************************************************************************/
 void LIN_SendHeader(tsLinFrame *FptsFrame);
 void LIN_SendPayload(tsLinFrame *FptsFrame);
+void LIN_CbRxMng(void);
 
 /******************************************************************************
  * Public APIs & functions
  *****************************************************************************/
+void LIN_Init(void)
+{
+    UART2_SetRxInterruptHandler(&LIN_CbRxMng);
+    su8ByteCnt = 0;
+}
+
 void LIN_EnableHW(void)
 {
     LIN_CS_SetHigh();
@@ -88,10 +97,11 @@ void LIN_SendHeader(tsLinFrame *FptsFrame)
         UART2_Write(pu8Frm[u8Cnt]);
     }
     
-    if (FptsFrame->u8Type == eLinMaster)
+    if (FptsFrame->teType == eLinMaster)
     {
         LIN_SendPayload(FptsFrame);
     }
+    
 }
 
 void LIN_SendPayload(tsLinFrame *FptsFrame)
@@ -107,4 +117,18 @@ void LIN_SendPayload(tsLinFrame *FptsFrame)
     
     u8Checksum = ~(u8Checksum) + 1;
     UART2_Write(u8Checksum);
+}
+
+void LIN_CbRxMng(void)
+{
+    spu8LinRxBuffer[su8ByteCnt] = U2RXREG;
+    if (su8ByteCnt < 10)
+    {
+        su8ByteCnt++;
+    }
+}
+
+void LIN_CbSoF(void)
+{
+    su8ByteCnt = 0;
 }

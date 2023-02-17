@@ -19,23 +19,25 @@
  * Definitions and macros
  *****************************************************************************/
 #define NB_LIN_FRAMES (2)
+#define LIN_FRAME_TIMEOUT (8) // <- ms
 
 /******************************************************************************
  * Type definitions
  *****************************************************************************/
-typedef struct
-{
-    uint8_t u8ID;
-    uint8_t *pu8Data;
-    uint8_t u8Length;
-    uint8_t u8Type;
-} tsLinFrame;
-
 typedef enum
 {
-    eLinMaster = 0,
-    eLinSlave
+    eLinSlave = 0,
+    eLinMaster
 } teLinType;
+
+typedef struct
+{
+    teLinType teType;
+    uint8_t u8ID;
+    uint8_t pu8Data[8];
+    uint8_t u8Length;
+    uint32_t u32Timeout;
+} tsLinFrame;
 
 /******************************************************************************
  * Extern/global variables
@@ -47,6 +49,7 @@ typedef enum
 void LIN_EnableHW(void);
 void LIN_DisableHW(void);
 void LIN_SendHeader(tsLinFrame *FptsFrame);
+void LIN_CbSoF(void);
 
 #endif	/* LIN_MNG_H */
 
