@@ -51,8 +51,6 @@
 #include "04 - CAN_MNG/CAN_mng.h"
 #include "05 - VERSION/Version.h"
 #include "06 - SYSTEM/Scheduler.h"
-#include "06 - SYSTEM/SystemTicks.h"
-#include "07 - APP/App.h"
 /*
                          Main application
  */
@@ -60,7 +58,6 @@
 void main(void)
 {
     SYSTEM_Initialize();
-    SystemTicks_Init();
     Scheduler_mng();
 }
 /**

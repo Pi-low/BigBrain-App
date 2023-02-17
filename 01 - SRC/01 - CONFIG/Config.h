@@ -40,7 +40,7 @@
 
 #define _CONF_ENABLE_CAN    1
 
-#define _CONF_ENABLE_LIN    0
+#define _CONF_ENABLE_LIN    1
 
 /******************************************************************************
  * Type definitions

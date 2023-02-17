@@ -63,5 +63,4 @@ uint32_t SystemTicks_Get(void)
 void SystemTicks_TimerCallback(void)
 {
     su32SysTick++;
-    TMR1_Start();
 }

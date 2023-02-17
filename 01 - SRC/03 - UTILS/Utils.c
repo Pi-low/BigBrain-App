@@ -43,7 +43,7 @@
 /******************************************************************************
  * Public APIs & functions
  *****************************************************************************/
-void Utils_PrintStr(const uint8_t * Fpu8Str)
+void Utils_PrintStr(const char * Fpu8Str)
 {
     uint8_t *pu8Tmp = NULL;
     pu8Tmp = Fpu8Str;
@@ -54,7 +54,7 @@ void Utils_PrintStr(const uint8_t * Fpu8Str)
     }
 }
 
-void Utils_PrintStrSize(const uint8_t * Fpu8Str, uint32_t Fu32Len)
+void Utils_PrintStrSize(const char * Fpu8Str, uint32_t Fu32Len)
 {
     uint32_t u32Cnt = 0;
     for (u32Cnt = 0; u32Cnt < Fu32Len; u32Cnt++)

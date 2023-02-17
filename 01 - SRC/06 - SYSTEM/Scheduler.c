@@ -52,6 +52,7 @@ static uint32_t su32Timeout_5ms = 0, su32Timeout_10ms = 0, su32Timeout_100ms = 0
  *****************************************************************************/
 void Scheduler_mng(void)
 {
+    SystemTicks_Init();
     App_Init();
 #if _CONF_ENABLE_CAN
     CAN_mng_Init();
@@ -63,25 +64,25 @@ void Scheduler_mng(void)
     
     while (true)
     {
-        if (su32Timeout_5ms > SystemTicks_Get())
+        if (SystemTicks_Get() > su32Timeout_5ms)
         {
             su32Timeout_5ms = SystemTicks_Get() + 5;
             Task_5ms();
         }
 
-        if (su32Timeout_10ms > SystemTicks_Get())
+        if (SystemTicks_Get() > su32Timeout_10ms)
         {
             su32Timeout_10ms = SystemTicks_Get() + 10;
             Task_10ms();
         }
 
-        if (su32Timeout_100ms > SystemTicks_Get())
+        if (SystemTicks_Get() > su32Timeout_100ms)
         {
             su32Timeout_100ms = SystemTicks_Get() + 100;
             Task_100ms();
         }
 
-        if (su32Timeout_1000ms > SystemTicks_Get())
+        if (SystemTicks_Get() > su32Timeout_1000ms)
         {
             su32Timeout_1000ms = SystemTicks_Get() + 1000;
             Task_1000ms();

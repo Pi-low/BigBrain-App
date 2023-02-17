@@ -35,7 +35,7 @@
 /******************************************************************************
  * Private variable definitions
  *****************************************************************************/
-static tsLinFrame stsLinFrame_Registered[NB_LIN_FRAMES];
+//static tsLinFrame stsLinFrame_Registered[NB_LIN_FRAMES];
 
 /******************************************************************************
  * Private function prototypes
@@ -105,6 +105,6 @@ void LIN_SendPayload(tsLinFrame *FptsFrame)
         u8Checksum += FptsFrame->pu8Data[u8Cnt];
     }
     
-    u8Checksum = (u8Checksum ^ 0xFF) + 1;
+    u8Checksum = ~(u8Checksum) + 1;
     UART2_Write(u8Checksum);
 }

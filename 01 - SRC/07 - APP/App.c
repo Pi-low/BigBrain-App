@@ -40,7 +40,6 @@
 /******************************************************************************
  * Private variable definitions
  *****************************************************************************/
-static uint8_t su8VehicleRxCnt;
 static CAN_MSG_FIELD stnCanMsgField_std;
 
 static CAN_MSG_OBJ stsTxVehicle;
@@ -95,7 +94,7 @@ void App_CbOnCanVehicleRx(void)
     {
         if (stsRxVehicle.msgId == APP_CAN_ID_500)
         {
-            if (stsRxSeat.data[7] == 0x2B)
+            if (stsRxVehicle.data[7] == 0x2B)
             {
                 su32Timeout1 = SystemTicks_Get() + APP_RX_FRAME_TIMEOUT;
             }
@@ -127,43 +126,45 @@ void App_RunTask10ms(void)
     
     if (SystemTicks_Get() > su32Timeout1)  
     {
-        if (su8Flag1 != 1)// <-- on rising edge
+        if (su8Flag1 != 1)
         {
             su8Flag1 = 1;
-            Utils_PrintStr("High speed CAN side rx OFF\r\n");
+            Utils_PrintStr("Low speed CAN side rx OFF\r\n"); // <-- on rising edge
         }
     }
     else
     {
-        if (su8Flag1 != 0) // <-- on falling edge
+        if (su8Flag1 != 0)
         {
             su8Flag1 = 0;
-            Utils_PrintStr("High speed CAN side rx ON\r\n");
+            Utils_PrintStr("Low speed CAN side rx ON\r\n"); // <-- on falling edge
         }
     }
     
     if (SystemTicks_Get() > s832Timeout2) 
     {
-        if (su8Flag2 != 1) // <-- on rising edge
+        if (su8Flag2 != 1)
         {
             su8Flag2 = 1;
-            Utils_PrintStr("Low speed CAN side rx OFF\r\n");
+            Utils_PrintStr("High speed CAN side rx OFF\r\n"); // <-- on rising edge
         }
     }
     else
     {
-        if (su8Flag2 != 0) // <-- on falling edge
+        if (su8Flag2 != 0)
         {
             su8Flag2 = 0;
-            Utils_PrintStr("Low speed CAN side rx ON\r\n");
+            Utils_PrintStr("High speed CAN side rx ON\r\n"); // <-- on falling edge
         }
     }
 }
 
 void App_RunTask1000ms(void)
 {
-    char pcStr[50];
-    sprintf(pcStr, "Current tick: %u\r\n", SystemTicks_Get());
+    char pcStr[255];
+    sprintf(pcStr, "Current tick: %lu\r\n - CAN 100K: %s\r\n - CAN 500K: %s\r\n", SystemTicks_Get(),
+            (su8Flag1 == 1) ? "OFF" : "ON",
+            (su8Flag2 == 1) ? "OFF" : "ON");
     Utils_PrintStr(pcStr);
 }
 
