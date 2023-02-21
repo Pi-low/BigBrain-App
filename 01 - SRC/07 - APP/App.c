@@ -65,17 +65,19 @@ static uint8_t su8Flag1, su8Flag2;
  *****************************************************************************/
 void App_Init(void)
 {
+#if !(APP_CAN_GW_MODE)
     stnCanMsgField_std.frameType = CAN_FRAME_DATA;
     stnCanMsgField_std.idType = CAN_FRAME_STD;
     stnCanMsgField_std.dlc = CAN_DLC_8;
     
     stsTxVehicle.msgId = APP_CAN_ID_100;
     stsTxVehicle.field = stnCanMsgField_std;
-    stsTxVehicle.data = spu8TxDataVehicle;
     
     stsTxSeat.msgId = APP_CAN_ID_500;
     stsTxSeat.field = stnCanMsgField_std;
+#endif
     stsTxSeat.data = spu8TxDataSeat;
+    stsTxVehicle.data = spu8TxDataVehicle;
     
     stsRxVehicle.data = spu8RxDataVehicle;
     stsRxSeat.data = spu8RxDataSeat;
@@ -92,13 +94,14 @@ void App_CbOnCanVehicleRx(void)
 {
     if (DmVehicleCanRx(&stsRxVehicle))
     {
-        if (stsRxVehicle.msgId == APP_CAN_ID_500)
-        {
-            if (stsRxVehicle.data[7] == 0x2B)
-            {
-                su32Timeout1 = SystemTicks_Get() + APP_RX_FRAME_TIMEOUT;
-            }
-        }
+
+#if APP_CAN_GW_MODE
+        memcpy(&stsTxSeat, &stsRxVehicle, sizeof(CAN_MSG_OBJ));
+        stsTxSeat.data[1] = 0x15;
+        //DmSeatCanTx(CAN_PRIORITY_NONE, &stsTxSeat);
+#else
+        su32Timeout1 = SystemTicks_Get() + APP_RX_FRAME_TIMEOUT;
+#endif
     }
 }
 
@@ -106,23 +109,23 @@ void App_CbOnCanSeatRx(void)
 {
     if (DmSeatCanRx(&stsRxSeat))
     {
-        if (stsRxSeat.msgId == APP_CAN_ID_100)
-        {
-            if (stsRxSeat.data[7] == 0x2C)
-            {
-                s832Timeout2 = SystemTicks_Get() + APP_RX_FRAME_TIMEOUT;
-            }
-        }
+#if APP_CAN_GW_MODE
+        memcpy(&stsTxVehicle, &stsRxSeat, sizeof(CAN_MSG_OBJ));
+        stsTxVehicle.data[1] = 0x25;
+        //DmVehicleCanTx(CAN_PRIORITY_NONE, &stsTxVehicle);
+#else
+        s832Timeout2 = SystemTicks_Get() + APP_RX_FRAME_TIMEOUT;
+#endif
     }
 }
 
 void App_RunTask10ms(void)
 {
-    stsTxVehicle.data[7] = 0x2C;
-    stsTxSeat.data[7] = 0x2B;
+#if !(APP_CAN_GW_MODE)
+    snprintf(stsTxVehicle.data, 8, "CAN1Test");
+    //stsTxVehicle.data[0] = 0xC1;
     
-    DmVehicleCanTx(CAN_PRIORITY_LOW, &stsTxVehicle);
-    DmSeatCanTx(CAN_PRIORITY_LOW, &stsTxSeat);
+    CAN1_Transmit(CAN_PRIORITY_MEDIUM, &stsTxVehicle);                                                                                                                                                                                       
     
     if (SystemTicks_Get() > su32Timeout1)  
     {
@@ -157,15 +160,27 @@ void App_RunTask10ms(void)
             Utils_PrintStr("High speed CAN side rx ON\r\n"); // <-- on falling edge
         }
     }
+#endif
+}
+
+void App_RunTask100ms(void)
+{
+#if !(APP_CAN_GW_MODE)
+    snprintf(stsTxSeat.data, 8, "CAN2Test");
+    //stsTxSeat.data[0] = 0xC2;
+    CAN2_Transmit(CAN_PRIORITY_MEDIUM, &stsTxSeat);
+#endif
 }
 
 void App_RunTask1000ms(void)
 {
+#if !(APP_CAN_GW_MODE)
     char pcStr[255];
     sprintf(pcStr, "Current tick: %lu\r\n - CAN 100K: %s\r\n - CAN 500K: %s\r\n", SystemTicks_Get(),
             (su8Flag1 == 1) ? "OFF" : "ON",
             (su8Flag2 == 1) ? "OFF" : "ON");
     Utils_PrintStr(pcStr);
+#endif
 }
 
 /******************************************************************************

@@ -49,9 +49,11 @@
 void CAN_mng_Init(void)
 {
     CAN1_TransmitEnable();
-    CAN1_ReceiveEnable();
     CAN2_TransmitEnable();
+    
+    CAN1_ReceiveEnable();
     CAN2_ReceiveEnable();
+    
     CAN1_SetRxBufferInterruptHandler(&App_CbOnCanVehicleRx);
     CAN2_SetRxBufferInterruptHandler(&App_CbOnCanSeatRx);
 }
