@@ -13,17 +13,16 @@
             <sourceEncoding>ISO-8859-1</sourceEncoding>
             <make-dep-projects/>
             <sourceRootList>
-                <sourceRootElem>01-SRC/00-LINKER</sourceRootElem>
                 <sourceRootElem>01 - SRC</sourceRootElem>
                 <sourceRootElem>02 - LINKER</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>
-                    <name>default</name>
+                    <name>App_Tester</name>
                     <type>2</type>
                 </confElem>
                 <confElem>
-                    <name>Debug</name>
+                    <name>Application</name>
                     <type>2</type>
                 </confElem>
             </confList>

@@ -18,8 +18,6 @@
 /******************************************************************************
  * Definitions and macros
  *****************************************************************************/
-#define APP_CAN_GW_MODE (0)
-
 /* Wrap CAN Tx functions */
 #define DmVehicleCanTx(prio, msg) CAN1_Transmit(prio, msg)
 #define DmSeatCanTx(prio, msg) CAN2_Transmit(prio, msg)
@@ -27,8 +25,8 @@
 #define DmVehicleCanRx(msg) CAN1_Receive(msg)
 #define DmSeatCanRx(msg) CAN2_Receive(msg)
 
-#define APP_CAN_ID_500 (0x26A)
-#define APP_CAN_ID_100 (0x16B)
+#define APP_CAN_ID_500 (0x500)
+#define APP_CAN_ID_100 (0x100)
 
 #define APP_RX_FRAME_TIMEOUT (250) //ms
 
@@ -47,7 +45,6 @@ void App_Init(void);
 void App_CbOnCanVehicleRx(void);
 void App_CbOnCanSeatRx(void);
 void App_RunTask10ms(void);
-void App_RunTask100ms(void);
 void App_RunTask1000ms(void);
 
 #endif	/* APP_H */

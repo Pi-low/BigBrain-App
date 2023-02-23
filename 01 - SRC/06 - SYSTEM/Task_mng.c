@@ -57,7 +57,6 @@ void Task_10ms(void)
 
 void Task_100ms(void)
 {
-    App_RunTask100ms();
 }
 
 void Task_1000ms(void)

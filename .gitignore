@@ -2,6 +2,6 @@ build/
 nbproject/private/
 .generated_files/
 debug/
-dist/
+dist/*
 *.mk
 *.properties
