@@ -44,6 +44,7 @@ static CAN_MSG_FIELD stnCanMsgField_std;
 
 static CAN_MSG_OBJ stsTxVehicle;
 static CAN_MSG_OBJ stsTxSeat;
+static CAN_MSG_OBJ DbugMSG;
 
 static CAN_MSG_OBJ stsRxVehicle;
 static CAN_MSG_OBJ stsRxSeat;
@@ -52,6 +53,7 @@ static uint8_t spu8TxDataVehicle[8] = {0};
 static uint8_t spu8TxDataSeat[8] = {0};
 static uint8_t spu8RxDataVehicle[8] = {0};
 static uint8_t spu8RxDataSeat[8] = {0};
+static uint8_t spuDebugData[8] = {0};
 
 static uint32_t su32Timeout1, s832Timeout2;
 static uint8_t su8Flag1, su8Flag2;
@@ -65,6 +67,8 @@ static uint8_t su8Flag1, su8Flag2;
  *****************************************************************************/
 void App_Init(void)
 {
+    CAN1_SetRxBufferInterruptHandler(&App_CbOnCanVehicleRx);
+    CAN2_SetRxBufferInterruptHandler(&App_CbOnCanSeatRx);
 #ifdef _APP_TEST
     stnCanMsgField_std.frameType = CAN_FRAME_DATA;
     stnCanMsgField_std.idType = CAN_FRAME_STD;
@@ -75,6 +79,10 @@ void App_Init(void)
     
     stsTxSeat.msgId = APP_CAN_ID_500;
     stsTxSeat.field = stnCanMsgField_std;
+    
+    DbugMSG.msgId = 0xDB;
+    DbugMSG.field = stnCanMsgField_std;
+    DbugMSG.data = spuDebugData;
 #endif
     stsTxSeat.data = spu8TxDataSeat;
     stsTxVehicle.data = spu8TxDataVehicle;
@@ -124,6 +132,7 @@ void App_RunTask10ms(void)
 #ifdef _APP_TEST
     uint32_t u32Tick = SystemTicks_Get();
     static uint8_t u8FlipFlop = 0;
+    uint16_t u16Reg = 0;
     
     stsTxVehicle.data[0] = u32Tick >> 24;
     stsTxVehicle.data[1] = u32Tick >> 16;
@@ -179,6 +188,17 @@ void App_RunTask10ms(void)
             Utils_PrintStr("High speed CAN side rx ON\r\n"); // <-- on falling edge
         }
     }
+    u16Reg = C2INTF;
+    
+    DbugMSG.data[0] = su8Flag1 | (su8Flag2 << 1);
+    DbugMSG.data[1] = u16Reg >> 8;
+    DbugMSG.data[2] = u16Reg;
+    DbugMSG.data[3] = stsRxSeat.msgId >> 8;
+    DbugMSG.data[4] = stsRxSeat.msgId;
+    DbugMSG.data[5] = stsRxSeat.data[0];
+    
+    DmSeatCanTx(CAN_PRIORITY_NONE, &DbugMSG);
+    
 #endif
 }
 

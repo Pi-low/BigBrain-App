@@ -32,6 +32,9 @@
 /******************************************************************************
  * Private function prototypes
  *****************************************************************************/
-
-const char __attribute__((address(0x280), space(prog))) SWDescription[128] = __DATE__" "__TIME__" : BigBrain tester software";
+#ifdef _APP_TEST
+const char __attribute__((address(0x280), space(prog))) SWDescription[128] = __DATE__" "__TIME__" : BigBrain tester application";
+#else
+const char __attribute__((address(0x280), space(prog))) SWDescription[128] = __DATE__" "__TIME__" : BigBrain CAN GW application";
+#endif
 const uint16_t SWVersion __attribute__((address(0x300), space(prog))) = SW_VERSION;
