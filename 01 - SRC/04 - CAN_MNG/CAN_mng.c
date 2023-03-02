@@ -53,7 +53,10 @@ void CAN_mng_Init(void)
     
     CAN1_ReceiveEnable();
     CAN2_ReceiveEnable();
-    
+    //CAN1_MODE_SetLow();
+    //CAN2_MODE_SetLow();
+    ODCAbits.ODCA9 = 1;
+    ODCCbits.ODCC3 = 1;
 }
 
 /******************************************************************************
