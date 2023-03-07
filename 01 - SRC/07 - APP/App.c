@@ -40,55 +40,42 @@
 /******************************************************************************
  * Private variable definitions
  *****************************************************************************/
-static CAN_MSG_FIELD stnCanMsgField_std;
-
-static CAN_MSG_OBJ stsTxVehicle;
-static CAN_MSG_OBJ stsTxSeat;
-static CAN_MSG_OBJ DbugMSG;
-
-static CAN_MSG_OBJ stsRxVehicle;
-static CAN_MSG_OBJ stsRxSeat;
-
-static uint8_t spu8TxDataVehicle[8] = {0};
-static uint8_t spu8TxDataSeat[8] = {0};
-static uint8_t spu8RxDataVehicle[8] = {0};
-static uint8_t spu8RxDataSeat[8] = {0};
-static uint8_t spuDebugData[8] = {0};
+static CAN_MSG_OBJ sts_CanMsg[eFrameNumber];
+static uint8_t spu8_CanDataBuffer[eFrameNumber][8];
+static uint16_t spu16_CanId[eFrameNumber] = {
+    0x100,
+    0,
+    0x500,
+    0,
+};
 
 static uint32_t su32Timeout1, s832Timeout2;
-static uint8_t su8Flag1, su8Flag2;
+static uint8_t su8Flag1, su8Flag2, su8Action;
 
 /******************************************************************************
  * Private function prototypes
  *****************************************************************************/
-
+#ifdef _APP_TEST
+static char* App_GetCanIntFlag(uint16_t Fu16Reg);
+#endif
 /******************************************************************************
  * Public APIs & functions
  *****************************************************************************/
 void App_Init(void)
 {
+    uint8_t u8Cnt;
+    
     CAN1_SetRxBufferInterruptHandler(&App_CbOnCanVehicleRx);
     CAN2_SetRxBufferInterruptHandler(&App_CbOnCanSeatRx);
-#ifdef _APP_TEST
-    stnCanMsgField_std.frameType = CAN_FRAME_DATA;
-    stnCanMsgField_std.idType = CAN_FRAME_STD;
-    stnCanMsgField_std.dlc = CAN_DLC_8;
     
-    stsTxVehicle.msgId = APP_CAN_ID_100;
-    stsTxVehicle.field = stnCanMsgField_std;
-    
-    stsTxSeat.msgId = APP_CAN_ID_500;
-    stsTxSeat.field = stnCanMsgField_std;
-    
-    DbugMSG.msgId = 0xDB;
-    DbugMSG.field = stnCanMsgField_std;
-    DbugMSG.data = spuDebugData;
-#endif
-    stsTxSeat.data = spu8TxDataSeat;
-    stsTxVehicle.data = spu8TxDataVehicle;
-    
-    stsRxVehicle.data = spu8RxDataVehicle;
-    stsRxSeat.data = spu8RxDataSeat;
+    for (u8Cnt = 0; u8Cnt < eFrameNumber; u8Cnt++)
+    {
+        sts_CanMsg[u8Cnt].field.dlc = 8;
+        sts_CanMsg[u8Cnt].field.frameType = CAN_FRAME_DATA;
+        sts_CanMsg[u8Cnt].field.idType = CAN_FRAME_STD;
+        sts_CanMsg[u8Cnt].data = spu8_CanDataBuffer[u8Cnt];
+        sts_CanMsg[u8Cnt].msgId = spu16_CanId[u8Cnt];
+    }
     
     su32Timeout1 = 0;
     s832Timeout2 = 0;
@@ -100,29 +87,31 @@ void App_Init(void)
 
 void App_CbOnCanVehicleRx(void)
 {
-    if (DmVehicleCanRx(&stsRxVehicle))
+    if (DmVehicleCanRx(&sts_CanMsg[eCAN_RX_VEHICLE]))
     {
 
 #ifdef _APP_TEST
         su32Timeout1 = SystemTicks_Get() + APP_RX_FRAME_TIMEOUT;
+        if (sts_CanMsg[eCAN_RX_VEHICLE].msgId == 0xDB)
+        {
+            su8Action = sts_CanMsg[eCAN_RX_VEHICLE].data[1];
+        }
 #else
-        memcpy(&stsTxSeat, &stsRxVehicle, sizeof(CAN_MSG_OBJ));
-        //stsTxSeat.data[7] = 0x15;
-        DmSeatCanTx(CAN_PRIORITY_NONE, &stsTxSeat);
+        memcpy(&sts_CanMsg[eCAN_TX_SEAT], &sts_CanMsg[eCAN_RX_VEHICLE], sizeof(CAN_MSG_OBJ));
+        DmSeatCanTx(CAN_PRIORITY_NONE, &sts_CanMsg[eCAN_TX_SEAT]);
 #endif
     }
 }
 
 void App_CbOnCanSeatRx(void)
 {
-    if (DmSeatCanRx(&stsRxSeat))
+    if (DmSeatCanRx(&sts_CanMsg[eCAN_RX_SEAT]))
     {
 #ifdef _APP_TEST
         s832Timeout2 = SystemTicks_Get() + APP_RX_FRAME_TIMEOUT;
 #else
-        memcpy(&stsTxVehicle, &stsRxSeat, sizeof(CAN_MSG_OBJ));
-        //stsTxVehicle.data[7] = 0x25;
-        DmVehicleCanTx(CAN_PRIORITY_NONE, &stsTxVehicle);
+        memcpy(&sts_CanMsg[eCAN_TX_VEHICLE], &sts_CanMsg[eCAN_RX_SEAT], sizeof(CAN_MSG_OBJ));
+        DmVehicleCanTx(CAN_PRIORITY_NONE, &sts_CanMsg[eCAN_TX_VEHICLE]);
 #endif
     }
 }
@@ -131,29 +120,25 @@ void App_RunTask10ms(void)
 {
 #ifdef _APP_TEST
     uint32_t u32Tick = SystemTicks_Get();
-    static uint8_t u8FlipFlop = 0;
-    uint16_t u16Reg = 0;
+    uint16_t u16Vbat = ADC1_ConversionResultGet(VBAT);
+    static uint8_t u8prev = 0;
     
-    stsTxVehicle.data[0] = u32Tick >> 24;
-    stsTxVehicle.data[1] = u32Tick >> 16;
-    stsTxVehicle.data[2] = u32Tick >> 8;
-    stsTxVehicle.data[3] = u32Tick;
+    sts_CanMsg[eCAN_TX_VEHICLE].data[0] = u32Tick >> 24;
+    sts_CanMsg[eCAN_TX_VEHICLE].data[1] = u32Tick >> 16;
+    sts_CanMsg[eCAN_TX_VEHICLE].data[2] = u32Tick >> 8;
+    sts_CanMsg[eCAN_TX_VEHICLE].data[3] = u32Tick;
+    sts_CanMsg[eCAN_TX_VEHICLE].data[4] = u16Vbat >> 8;
+    sts_CanMsg[eCAN_TX_VEHICLE].data[5] = u16Vbat;
     
-    stsTxSeat.data[0] = u32Tick >> 24;
-    stsTxSeat.data[1] = u32Tick >> 16;
-    stsTxSeat.data[2] = u32Tick >> 8;
-    stsTxSeat.data[3] = u32Tick;
+    sts_CanMsg[eCAN_TX_SEAT].data[0] = u32Tick >> 24;
+    sts_CanMsg[eCAN_TX_SEAT].data[1] = u32Tick >> 16;
+    sts_CanMsg[eCAN_TX_SEAT].data[2] = u32Tick >> 8;
+    sts_CanMsg[eCAN_TX_SEAT].data[3] = u32Tick;
+    sts_CanMsg[eCAN_TX_SEAT].data[4] = u16Vbat >> 8;
+    sts_CanMsg[eCAN_TX_SEAT].data[5] = u16Vbat;
     
-    if (u8FlipFlop == 0)
-    {
-        DmVehicleCanTx(CAN_PRIORITY_MEDIUM, &stsTxVehicle);
-        u8FlipFlop ^= 1;
-    }
-    else
-    {
-        DmSeatCanTx(CAN_PRIORITY_MEDIUM, &stsTxSeat);
-        u8FlipFlop ^= 1;
-    }                                                                                                                                                                                       
+    DmVehicleCanTx(CAN_PRIORITY_NONE, &sts_CanMsg[eCAN_TX_VEHICLE]);
+    DmSeatCanTx(CAN_PRIORITY_NONE, &sts_CanMsg[eCAN_TX_SEAT]);                                                                                                                                                                   
     
     if (SystemTicks_Get() > su32Timeout1)  
     {
@@ -188,27 +173,30 @@ void App_RunTask10ms(void)
             Utils_PrintStr("High speed CAN side rx ON\r\n"); // <-- on falling edge
         }
     }
-    u16Reg = C2INTF;
     
-    DbugMSG.data[0] = su8Flag1 | (su8Flag2 << 1);
-    DbugMSG.data[1] = u16Reg >> 8;
-    DbugMSG.data[2] = u16Reg;
-    DbugMSG.data[3] = stsRxSeat.msgId >> 8;
-    DbugMSG.data[4] = stsRxSeat.msgId;
-    DbugMSG.data[5] = stsRxSeat.data[0];
-    
-    DmSeatCanTx(CAN_PRIORITY_NONE, &DbugMSG);
-    
+    if (u8prev != su8Action)
+    {
+        _LATA9 = su8Action & 1;         //CAN1 RS
+        _LATC3 = (su8Action >> 1) & 1;  //CAN2 RS
+        _LATA10 = (su8Action >> 2) & 1; //FPWM
+        u8prev = su8Action;
+    }
 #endif
 }
 
 void App_RunTask1000ms(void)
 {
 #ifdef _APP_TEST
-    char pcStr[255];
-    sprintf(pcStr, "Current tick: %lu\r\n - CAN 100K: %s\r\n - CAN 500K: %s\r\n", SystemTicks_Get(),
+    char pcStr[768];
+    uint16_t u16Reg2 = C2INTF;
+    uint16_t u16Reg1 = C1INTF;
+    sprintf(pcStr, "Current tick: %lu\r\n - CAN 100K: %s\r\n - CAN 500K: %s\r\nSystem voltage: %u\r\nCAN1 IF: %s\r\nCAN2 IF : %s\r\n",
+            SystemTicks_Get(),
             (su8Flag1 == 1) ? "OFF" : "ON",
-            (su8Flag2 == 1) ? "OFF" : "ON");
+            (su8Flag2 == 1) ? "OFF" : "ON",
+            ADC1_ConversionResultGet(VBAT),
+            App_GetCanIntFlag(u16Reg1),
+            App_GetCanIntFlag(u16Reg2));
     Utils_PrintStr(pcStr);
 #endif
 }
@@ -216,3 +204,89 @@ void App_RunTask1000ms(void)
 /******************************************************************************
  * Private functions
  *****************************************************************************/
+#ifdef _APP_TEST
+char* App_GetCanIntFlag(uint16_t Fu16Reg)
+{
+    char pcVerbose[256];
+    uint8_t u8Cnt;
+    uint8_t u8Tmp;
+    for (u8Cnt = 0; u8Cnt < 16; u8Cnt++)
+    {
+        u8Tmp = (Fu16Reg >> u8Cnt) & 1;
+        switch (u8Cnt)
+        {
+        case 0:
+            if (u8Tmp != 0)
+            {
+                strcat(pcVerbose, "TBIF ");
+            }
+        case 1:
+            if (u8Tmp != 0)
+            {
+                strcat(pcVerbose, "RBIF ");
+            }
+        case 2:
+            if (u8Tmp != 0)
+            {
+                strcat(pcVerbose, "RBOVIF ");
+            }
+        case 3:
+            if (u8Tmp != 0)
+            {
+                strcat(pcVerbose, "FIFOIF ");
+            }
+        case 4:
+            if (u8Tmp != 0)
+            {
+                strcat(pcVerbose, "ERRIF ");
+            }
+        case 6:
+            if (u8Tmp != 0)
+            {
+                strcat(pcVerbose, "WAKIF ");
+            }
+        case 7:
+            if (u8Tmp != 0)
+            {
+                strcat(pcVerbose, "IVRIF ");
+            }
+        case 8:
+            if (u8Tmp != 0)
+            {
+                strcat(pcVerbose, "EWARN ");
+            }
+        case 9:
+            if (u8Tmp != 0)
+            {
+                strcat(pcVerbose, "RXWAR ");
+            }
+        case 10:
+            if (u8Tmp != 0)
+            {
+                strcat(pcVerbose, "TXWAR ");
+            }
+        case 11:
+            if (u8Tmp != 0)
+            {
+                strcat(pcVerbose, "TXWAR ");
+            }
+        case 12:
+            if (u8Tmp != 0)
+            {
+                strcat(pcVerbose, "RXBP ");
+            }
+        case 13:
+            if (u8Tmp != 0)
+            {
+                strcat(pcVerbose, "TXBP ");
+            }
+        case 14:
+            if (u8Tmp != 0)
+            {
+                strcat(pcVerbose, "TXBO ");
+            }
+        }
+    }
+    return pcVerbose;
+}
+#endif

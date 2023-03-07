@@ -25,14 +25,19 @@
 #define DmVehicleCanRx(msg) CAN1_Receive(msg)
 #define DmSeatCanRx(msg) CAN2_Receive(msg)
 
-#define APP_CAN_ID_500 (0x500)
-#define APP_CAN_ID_100 (0x100)
-
 #define APP_RX_FRAME_TIMEOUT (250) //ms
 
 /******************************************************************************
  * Type definitions
  *****************************************************************************/
+enum
+{
+    eCAN_TX_VEHICLE = 0,
+    eCAN_RX_VEHICLE,
+    eCAN_TX_SEAT,
+    eCAN_RX_SEAT,
+    eFrameNumber
+};
 
 /******************************************************************************
  * Extern/global variables
