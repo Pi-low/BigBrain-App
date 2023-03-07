@@ -50,6 +50,6 @@ void LIN_EnableHW(void);
 void LIN_DisableHW(void);
 void LIN_SendHeader(tsLinFrame *FptsFrame);
 void LIN_CbSoF(void);
-
+void LIN_CbRxMng(void);
 #endif	/* LIN_MNG_H */
 
