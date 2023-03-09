@@ -120,22 +120,21 @@ void App_RunTask10ms(void)
 {
 #ifdef _APP_TEST
     uint32_t u32Tick = SystemTicks_Get();
-    uint16_t u16Vbat = ADC1_ConversionResultGet(VBAT);
     static uint8_t u8prev = 0;
     
     sts_CanMsg[eCAN_TX_VEHICLE].data[0] = u32Tick >> 24;
     sts_CanMsg[eCAN_TX_VEHICLE].data[1] = u32Tick >> 16;
     sts_CanMsg[eCAN_TX_VEHICLE].data[2] = u32Tick >> 8;
     sts_CanMsg[eCAN_TX_VEHICLE].data[3] = u32Tick;
-    sts_CanMsg[eCAN_TX_VEHICLE].data[4] = u16Vbat >> 8;
-    sts_CanMsg[eCAN_TX_VEHICLE].data[5] = u16Vbat;
+    sts_CanMsg[eCAN_TX_VEHICLE].data[4] = ADC1_ConversionResultGet(VBAT) >> 8;
+    sts_CanMsg[eCAN_TX_VEHICLE].data[5] = ADC1_ConversionResultGet(VBAT);
     
     sts_CanMsg[eCAN_TX_SEAT].data[0] = u32Tick >> 24;
     sts_CanMsg[eCAN_TX_SEAT].data[1] = u32Tick >> 16;
     sts_CanMsg[eCAN_TX_SEAT].data[2] = u32Tick >> 8;
     sts_CanMsg[eCAN_TX_SEAT].data[3] = u32Tick;
-    sts_CanMsg[eCAN_TX_SEAT].data[4] = u16Vbat >> 8;
-    sts_CanMsg[eCAN_TX_SEAT].data[5] = u16Vbat;
+    sts_CanMsg[eCAN_TX_SEAT].data[4] = ADC1_ConversionResultGet(VBAT) >> 8;
+    sts_CanMsg[eCAN_TX_SEAT].data[5] = ADC1_ConversionResultGet(VBAT);
     
     DmVehicleCanTx(CAN_PRIORITY_NONE, &sts_CanMsg[eCAN_TX_VEHICLE]);
     DmSeatCanTx(CAN_PRIORITY_NONE, &sts_CanMsg[eCAN_TX_SEAT]);                                                                                                                                                                   
@@ -190,13 +189,13 @@ void App_RunTask1000ms(void)
     char pcStr[768];
     uint16_t u16Reg2 = C2INTF;
     uint16_t u16Reg1 = C1INTF;
-    sprintf(pcStr, "Current tick: %lu\r\n - CAN 100K: %s\r\n - CAN 500K: %s\r\nSystem voltage: %u\r\nCAN1 IF: %s\r\nCAN2 IF : %s\r\n",
+    sprintf(pcStr, "\r\nCurrent tick: %lu\r\n - CAN 100K: %s\r\n - CAN 500K: %s\r\nSystem voltage: %u\r\nC1INTF: %04X\r\nC2INTF: %04X\r\n",
             SystemTicks_Get(),
             (su8Flag1 == 1) ? "OFF" : "ON",
             (su8Flag2 == 1) ? "OFF" : "ON",
             ADC1_ConversionResultGet(VBAT),
-            App_GetCanIntFlag(u16Reg1),
-            App_GetCanIntFlag(u16Reg2));
+            u16Reg1,
+            u16Reg2);
     Utils_PrintStr(pcStr);
 #endif
 }
@@ -204,89 +203,3 @@ void App_RunTask1000ms(void)
 /******************************************************************************
  * Private functions
  *****************************************************************************/
-#ifdef _APP_TEST
-char* App_GetCanIntFlag(uint16_t Fu16Reg)
-{
-    char pcVerbose[256];
-    uint8_t u8Cnt;
-    uint8_t u8Tmp;
-    for (u8Cnt = 0; u8Cnt < 16; u8Cnt++)
-    {
-        u8Tmp = (Fu16Reg >> u8Cnt) & 1;
-        switch (u8Cnt)
-        {
-        case 0:
-            if (u8Tmp != 0)
-            {
-                strcat(pcVerbose, "TBIF ");
-            }
-        case 1:
-            if (u8Tmp != 0)
-            {
-                strcat(pcVerbose, "RBIF ");
-            }
-        case 2:
-            if (u8Tmp != 0)
-            {
-                strcat(pcVerbose, "RBOVIF ");
-            }
-        case 3:
-            if (u8Tmp != 0)
-            {
-                strcat(pcVerbose, "FIFOIF ");
-            }
-        case 4:
-            if (u8Tmp != 0)
-            {
-                strcat(pcVerbose, "ERRIF ");
-            }
-        case 6:
-            if (u8Tmp != 0)
-            {
-                strcat(pcVerbose, "WAKIF ");
-            }
-        case 7:
-            if (u8Tmp != 0)
-            {
-                strcat(pcVerbose, "IVRIF ");
-            }
-        case 8:
-            if (u8Tmp != 0)
-            {
-                strcat(pcVerbose, "EWARN ");
-            }
-        case 9:
-            if (u8Tmp != 0)
-            {
-                strcat(pcVerbose, "RXWAR ");
-            }
-        case 10:
-            if (u8Tmp != 0)
-            {
-                strcat(pcVerbose, "TXWAR ");
-            }
-        case 11:
-            if (u8Tmp != 0)
-            {
-                strcat(pcVerbose, "TXWAR ");
-            }
-        case 12:
-            if (u8Tmp != 0)
-            {
-                strcat(pcVerbose, "RXBP ");
-            }
-        case 13:
-            if (u8Tmp != 0)
-            {
-                strcat(pcVerbose, "TXBP ");
-            }
-        case 14:
-            if (u8Tmp != 0)
-            {
-                strcat(pcVerbose, "TXBO ");
-            }
-        }
-    }
-    return pcVerbose;
-}
-#endif

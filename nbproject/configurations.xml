@@ -290,7 +290,7 @@
       <C30Global>
         <property key="combine-sourcefiles" value="false"/>
         <property key="common-include-directories"
-                  value="01 - SRC;01 - SRC\01 - CONFIG;01 - SRC\02 - LIN_MNG;01 - SRC\03 - UTILS;01 - SRC\04 - CAN_MNG;01 - SRC\05 - VERSION"/>
+                  value="01 - SRC;01 - SRC\01 - CONFIG;01 - SRC\02 - LIN_MNG;01 - SRC\03 - UTILS;01 - SRC\04 - CAN_MNG;01 - SRC\05 - VERSION;01 - SRC\06 - SYSTEM;01 - SRC\07 - APP"/>
         <property key="dual-boot-partition" value="0"/>
         <property key="fast-math" value="false"/>
         <property key="generic-16-bit" value="false"/>
@@ -632,7 +632,7 @@
       <C30Global>
         <property key="combine-sourcefiles" value="false"/>
         <property key="common-include-directories"
-                  value="01 - SRC;01 - SRC\01 - CONFIG;01 - SRC\02 - LIN_MNG;01 - SRC\03 - UTILS;01 - SRC\04 - CAN_MNG;01 - SRC\05 - VERSION"/>
+                  value="01 - SRC;01 - SRC\01 - CONFIG;01 - SRC\02 - LIN_MNG;01 - SRC\03 - UTILS;01 - SRC\04 - CAN_MNG;01 - SRC\05 - VERSION;01 - SRC\06 - SYSTEM;01 - SRC\07 - APP"/>
         <property key="dual-boot-partition" value="0"/>
         <property key="fast-math" value="false"/>
         <property key="generic-16-bit" value="false"/>
