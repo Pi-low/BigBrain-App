@@ -13,8 +13,12 @@
  *****************************************************************************/
 #include <stdint.h>
 #include "../01 - CONFIG/Config.h"
+#include "../01 - SRC/08 - CLI/cli.h"
+
+extern cli_t g_TsCliDef;
 
 #define DmPrintDebug(str) Utils_PrintStr(str)
+
 
 /******************************************************************************
  * Public API prototypes

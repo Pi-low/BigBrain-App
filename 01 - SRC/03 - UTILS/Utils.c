@@ -32,9 +32,16 @@
 #include "../01 - CONFIG/Types.h"
 #include "Utils.h"
 
+cli_t g_TsCliDef;
+
 /******************************************************************************
  * Private variable definitions
  *****************************************************************************/
+static cmd_t tsCliCommands[] =
+{
+    {"Echo", UtilsReply},
+    {"Configure CAN", CANConfig}
+};
 
 /******************************************************************************
  * Private function prototypes

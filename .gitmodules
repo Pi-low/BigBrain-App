@@ -1,0 +1,3 @@
+[submodule "01 - SRC/08 - CLI"]
+	path = 01 - SRC/08 - CLI
+	url = https://github.com/Pi-low/embedded-cli.git

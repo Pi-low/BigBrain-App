@@ -49,6 +49,8 @@
 #include <stdint.h>
 #include <stddef.h>
 #include "xc.h"
+#include "../01 - SRC/08 - CLI/cli.h"
+#include "../01 - SRC/03 - UTILS/Utils.h"
 #include "uart1.h"
 
 /**
@@ -199,6 +201,7 @@ void UART1_SetRxInterruptHandler(void (* interruptHandler)(void))
 
 void __attribute__ ( ( interrupt, no_auto_psv ) ) _U1RXInterrupt( void )
 {
+    uint8_t u8Data;
     if(UART1_RxDefaultInterruptHandler)
     {
         UART1_RxDefaultInterruptHandler();
@@ -208,25 +211,30 @@ void __attribute__ ( ( interrupt, no_auto_psv ) ) _U1RXInterrupt( void )
 	
     while((U1STAbits.URXDA == 1))
     {
-        *rxTail = U1RXREG;
-
-        // Will the increment not result in a wrap and not result in a pure collision?
-        // This is most often condition so check first
-        if ( ( rxTail    != (rxQueue + UART1_CONFIG_RX_BYTEQ_LENGTH-1)) &&
-             ((rxTail+1) != rxHead) )
-        {
-            rxTail++;
-        } 
-        else if ( (rxTail == (rxQueue + UART1_CONFIG_RX_BYTEQ_LENGTH-1)) &&
-                  (rxHead !=  rxQueue) )
-        {
-            // Pure wrap no collision
-            rxTail = rxQueue;
-        } 
-        else // must be collision
-        {
-            rxOverflowed = true;
-        }
+        // *rxTail = U1RXREG;
+        u8Data = U1RXREG
+        cli_put(&g_TsCliDef, u8Data);
+        // // Will the increment not result in a wrap and not result in a pure collision?
+        // // This is most often condition so check first
+        // if ( ( rxTail    != (rxQueue + UART1_CONFIG_RX_BYTEQ_LENGTH-1)) &&
+        //      ((rxTail+1) != rxHead) )
+        // {
+        //     rxTail++;
+        // } 
+        // else if ( (rxTail == (rxQueue + UART1_CONFIG_RX_BYTEQ_LENGTH-1)) &&
+        //           (rxHead !=  rxQueue) )
+        // {
+        //     // Pure wrap no collision
+        //     rxTail = rxQueue;
+        // } 
+        // else // must be collision
+        // {
+        //     rxOverflowed = true;
+        // }
+        // if (bStringReady)
+        // {
+        //     // manage the received sting
+        // }
     }
 }
 
