@@ -17,13 +17,19 @@
 
 extern cli_t g_TsCliDef;
 
+cmd_t tsCliCommands[2] =
+{
+    {"Echo", UtilsReply},
+    {"Configure CAN", CANConfig}
+};
+
 #define DmPrintDebug(str) Utils_PrintStr(str)
 
 
 /******************************************************************************
  * Public API prototypes
  *****************************************************************************/
-void Utils_PrintStr(const char * Fpu8Str);
+void Utils_PrintStr(char * Fpu8Str);
 void Utils_PrintStrSize(const char * Fpu8Str, uint32_t Fu32Len);
 
 #endif	/* UTILS_H */

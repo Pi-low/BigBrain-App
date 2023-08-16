@@ -35,6 +35,10 @@
         <logicalFolder name="07 - APP" displayName="07 - APP" projectFiles="true">
           <itemPath>01 - SRC/07 - APP/App.h</itemPath>
         </logicalFolder>
+        <logicalFolder name="08 - CLI" displayName="08 - CLI" projectFiles="true">
+          <itemPath>01 - SRC/08 - CLI/cli.h</itemPath>
+          <itemPath>01 - SRC/08 - CLI/cli_defs.h</itemPath>
+        </logicalFolder>
       </logicalFolder>
       <logicalFolder name="MCC Generated Files"
                      displayName="MCC Generated Files"
@@ -97,6 +101,9 @@
         </logicalFolder>
         <logicalFolder name="07 - APP" displayName="07 - APP" projectFiles="true">
           <itemPath>01 - SRC/07 - APP/App.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="08 - CLI" displayName="08 - CLI" projectFiles="true">
+          <itemPath>01 - SRC/08 - CLI/cli.c</itemPath>
         </logicalFolder>
         <itemPath>01 - SRC/main.c</itemPath>
       </logicalFolder>

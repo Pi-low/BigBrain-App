@@ -37,11 +37,6 @@ cli_t g_TsCliDef;
 /******************************************************************************
  * Private variable definitions
  *****************************************************************************/
-static cmd_t tsCliCommands[] =
-{
-    {"Echo", UtilsReply},
-    {"Configure CAN", CANConfig}
-};
 
 /******************************************************************************
  * Private function prototypes
@@ -50,7 +45,15 @@ static cmd_t tsCliCommands[] =
 /******************************************************************************
  * Public APIs & functions
  *****************************************************************************/
-void Utils_PrintStr(const char * Fpu8Str)
+void Utils_Init(void)
+{
+    g_TsCliDef.println = Utils_PrintStr;
+    g_TsCliDef.cmd_cnt = 2;
+    g_TsCliDef.cmd_tbl = tsCliCommands;
+    cli_init(&g_TsCliDef);
+}
+
+void Utils_PrintStr(char * Fpu8Str)
 {
     uint8_t *pu8Tmp = NULL;
     pu8Tmp = Fpu8Str;
