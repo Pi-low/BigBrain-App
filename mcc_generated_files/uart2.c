@@ -50,7 +50,7 @@
 #include <stddef.h>
 #include "xc.h"
 #include "uart2.h"
-#include "../01 - SRC/02 - LIN_MNG/LIN_mng.h"
+#include "LIN_mng.h"
 
 /**
   Section: Data Type Definitions

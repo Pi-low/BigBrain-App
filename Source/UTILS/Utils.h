@@ -15,22 +15,19 @@
 #include "Config.h"
 #include "cli.h"
 
-extern cli_t g_TsCliDef;
-
-cmd_t tsCliCommands[2] =
-{
-    {"Echo", UtilsReply},
-    {"Configure CAN", CANConfig}
-};
-
-#define DmPrintDebug(str) Utils_PrintStr(str)
-
-
 /******************************************************************************
  * Public API prototypes
  *****************************************************************************/
 void Utils_PrintStr(char * Fpu8Str);
 void Utils_PrintStrSize(const char * Fpu8Str, uint32_t Fu32Len);
+cli_status_t UtilsReply(int argc, char **argv);
+cli_status_t CANConfig(int argc, char **argv);
+extern cli_t g_TsCliDef;
+
+#define DmPrintDebug(str) Utils_PrintStr(str)
+
+
+
 
 #endif	/* UTILS_H */
 

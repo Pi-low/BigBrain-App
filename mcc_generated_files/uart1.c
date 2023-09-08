@@ -212,7 +212,7 @@ void __attribute__ ( ( interrupt, no_auto_psv ) ) _U1RXInterrupt( void )
     while((U1STAbits.URXDA == 1))
     {
         // *rxTail = U1RXREG;
-        u8Data = U1RXREG
+        u8Data = U1RXREG;
         cli_put(&g_TsCliDef, u8Data);
         // // Will the increment not result in a wrap and not result in a pure collision?
         // // This is most often condition so check first

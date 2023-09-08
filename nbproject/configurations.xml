@@ -11,6 +11,8 @@
         <itemPath>Source/CAN_MNG/CAN_mng.h</itemPath>
       </logicalFolder>
       <logicalFolder name="CLI" displayName="CLI" projectFiles="true">
+        <itemPath>Source/CLI/cli.h</itemPath>
+        <itemPath>Source/CLI/cli_defs.h</itemPath>
       </logicalFolder>
       <logicalFolder name="CONFIG" displayName="CONFIG" projectFiles="true">
         <itemPath>Source/CONFIG/Config.h</itemPath>
@@ -68,6 +70,9 @@
       </logicalFolder>
       <logicalFolder name="CAN_MNG" displayName="CAN_MNG" projectFiles="true">
         <itemPath>Source/CAN_MNG/CAN_mng.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="CLI" displayName="CLI" projectFiles="true">
+        <itemPath>Source/CLI/cli.c</itemPath>
       </logicalFolder>
       <logicalFolder name="CONFIG" displayName="CONFIG" projectFiles="true">
       </logicalFolder>

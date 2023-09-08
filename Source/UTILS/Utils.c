@@ -37,6 +37,11 @@ cli_t g_TsCliDef;
 /******************************************************************************
  * Private variable definitions
  *****************************************************************************/
+ cmd_t tsCliCommands[2] =
+{
+    {"Echo", UtilsReply},
+    {"Configure CAN", CANConfig}
+};
 
 /******************************************************************************
  * Private function prototypes
@@ -71,6 +76,14 @@ void Utils_PrintStrSize(const char * Fpu8Str, uint32_t Fu32Len)
     {
         UART1_Write((uint8_t) *(Fpu8Str + u32Cnt));
     }
+}
+
+cli_status_t UtilsReply(int argc, char **argv)
+{
+}
+
+cli_status_t CANConfig(int argc, char **argv)
+{
 }
 
 /******************************************************************************

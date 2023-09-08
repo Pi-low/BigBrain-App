@@ -1,0 +1,3 @@
+[submodule "Source/CLI"]
+	path = Source/CLI
+	url = https://github.com/Pi-low/embedded-cli.git

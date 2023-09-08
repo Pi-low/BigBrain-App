@@ -45,12 +45,12 @@
 /**
   Section: Included Files
 */
-#include "01 - CONFIG/Config.h"
-#include "02 - LIN_MNG/LIN_mng.h"
-#include "03 - UTILS/Utils.h"
-#include "04 - CAN_MNG/CAN_mng.h"
-#include "05 - VERSION/Version.h"
-#include "06 - SYSTEM/Scheduler.h"
+#include "Config.h"
+#include "LIN_mng.h"
+#include "Utils.h"
+#include "CAN_mng.h"
+#include "Version.h"
+#include "Scheduler.h"
 /*
                          Main application
  */
