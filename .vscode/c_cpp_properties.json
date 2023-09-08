@@ -3,6 +3,8 @@
         {
             "name": "Win32",
             "includePath": [
+                "C:/Program Files/Microchip/xc16/v2.00/include",
+                "C:/Program Files/Microchip/xc16/v2.00/support/generic/h",
                 "${workspaceFolder}/**"
             ],
             "defines": [
