@@ -30,11 +30,11 @@
 #include <stdint.h>
 #include <string.h>
 #include <xc.h>
-#include "../01 - CONFIG/Config.h"
-#include "../01 - CONFIG/Types.h"
-#include "../05 - VERSION/Version.h"
-#include "../03 - UTILS/Utils.h"
-#include "../06 - SYSTEM/SystemTicks.h"
+#include "Config.h"
+#include "Types.h"
+#include "Version.h"
+#include "Utils.h"
+#include "SystemTicks.h"
 #include "App.h"
 
 /******************************************************************************

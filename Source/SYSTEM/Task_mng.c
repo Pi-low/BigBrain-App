@@ -16,49 +16,55 @@
  */
 
 /**
- * @file    CAN_mng.c
+ * @file    Task_mng.c
  * @author  Nello Chommanivong
- * @date    February 13, 2023, 10:35 PM
+ * @date    14 février 2023, 14:09
  * 
  */
 
 /******************************************************************************
  * Includes
  *****************************************************************************/
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
 #include <xc.h>
-#include "../01 - CONFIG/Config.h"
-#include "../01 - CONFIG/Types.h"
-#include "../07 - APP/App.h"
-#include "CAN_mng.h"
+#include "Config.h"
+#include "Types.h"
+#include "App.h"
+#include "Task_mng.h"
 
 /******************************************************************************
  * Private variable definitions
  *****************************************************************************/
 
 /******************************************************************************
- * Private function prototypes
+ * Private funtion prototypes
  *****************************************************************************/
 
 /******************************************************************************
  * Public APIs & functions
  *****************************************************************************/
-
-/**
- * 
- */
-void CAN_mng_Init(void)
+void Task_5ms(void)
 {
-    CAN1_TransmitEnable();
-    CAN2_TransmitEnable();
     
-    CAN1_ReceiveEnable();
-    CAN2_ReceiveEnable();
-    //CAN1_MODE_SetLow();
-    //CAN2_MODE_SetLow();
-    ODCAbits.ODCA9 = 1;
-    ODCCbits.ODCC3 = 1;
+}
+
+void Task_10ms(void)
+{
+    App_RunTask10ms();
+}
+
+void Task_100ms(void)
+{
+}
+
+void Task_1000ms(void)
+{
+    App_RunTask1000ms();
 }
 
 /******************************************************************************
  * Private functions
  *****************************************************************************/
+

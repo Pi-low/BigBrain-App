@@ -4,41 +4,20 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <logicalFolder name="01 - SRC" displayName="01 - SRC" projectFiles="true">
-        <logicalFolder name="01 - CONFIG" displayName="01 - CONFIG" projectFiles="true">
-          <itemPath>01 - SRC/01 - CONFIG/Config.h</itemPath>
-          <itemPath>01 - SRC/01 - CONFIG/Types.h</itemPath>
-        </logicalFolder>
-        <logicalFolder name="02 - LIN_MNG"
-                       displayName="02 - LIN_MNG"
-                       projectFiles="true">
-          <itemPath>01 - SRC/02 - LIN_MNG/LIN_mng.h</itemPath>
-        </logicalFolder>
-        <logicalFolder name="03 - UTILS" displayName="03 - UTILS" projectFiles="true">
-          <itemPath>01 - SRC/03 - UTILS/Utils.h</itemPath>
-        </logicalFolder>
-        <logicalFolder name="04 - CAN_MNG"
-                       displayName="04 - CAN_MNG"
-                       projectFiles="true">
-          <itemPath>01 - SRC/04 - CAN_MNG/CAN_mng.h</itemPath>
-        </logicalFolder>
-        <logicalFolder name="05 - VERSION"
-                       displayName="05 - VERSION"
-                       projectFiles="true">
-          <itemPath>01 - SRC/05 - VERSION/Version.h</itemPath>
-        </logicalFolder>
-        <logicalFolder name="06 - SYSTEM" displayName="06 - SYSTEM" projectFiles="true">
-          <itemPath>01 - SRC/06 - SYSTEM/Task_mng.h</itemPath>
-          <itemPath>01 - SRC/06 - SYSTEM/Scheduler.h</itemPath>
-          <itemPath>01 - SRC/06 - SYSTEM/SystemTicks.h</itemPath>
-        </logicalFolder>
-        <logicalFolder name="07 - APP" displayName="07 - APP" projectFiles="true">
-          <itemPath>01 - SRC/07 - APP/App.h</itemPath>
-        </logicalFolder>
-        <logicalFolder name="08 - CLI" displayName="08 - CLI" projectFiles="true">
-          <itemPath>01 - SRC/08 - CLI/cli.h</itemPath>
-          <itemPath>01 - SRC/08 - CLI/cli_defs.h</itemPath>
-        </logicalFolder>
+      <logicalFolder name="APP" displayName="APP" projectFiles="true">
+        <itemPath>Source/APP/App.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="CAN_MNG" displayName="CAN_MNG" projectFiles="true">
+        <itemPath>Source/CAN_MNG/CAN_mng.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="CLI" displayName="CLI" projectFiles="true">
+      </logicalFolder>
+      <logicalFolder name="CONFIG" displayName="CONFIG" projectFiles="true">
+        <itemPath>Source/CONFIG/Config.h</itemPath>
+        <itemPath>Source/CONFIG/Types.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="LIN_MNG" displayName="LIN_MNG" projectFiles="true">
+        <itemPath>Source/LIN_MNG/LIN_mng.h</itemPath>
       </logicalFolder>
       <logicalFolder name="MCC Generated Files"
                      displayName="MCC Generated Files"
@@ -64,48 +43,36 @@
         <itemPath>mcc_generated_files/traps.h</itemPath>
         <itemPath>mcc_generated_files/dma.h</itemPath>
       </logicalFolder>
+      <logicalFolder name="SYSTEM" displayName="SYSTEM" projectFiles="true">
+        <itemPath>Source/SYSTEM/Scheduler.h</itemPath>
+        <itemPath>Source/SYSTEM/SystemTicks.h</itemPath>
+        <itemPath>Source/SYSTEM/Task_mng.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="UTILS" displayName="UTILS" projectFiles="true">
+        <itemPath>Source/UTILS/Utils.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="VERSION" displayName="VERSION" projectFiles="true">
+        <itemPath>Source/VERSION/Version.h</itemPath>
+      </logicalFolder>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
                    projectFiles="true">
-      <itemPath>02 - LINKER/Linker_App.gld</itemPath>
+      <itemPath>Linker/Linker_App.gld</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <logicalFolder name="01 - SRC" displayName="01 - SRC" projectFiles="true">
-        <logicalFolder name="01 - CONFIG" displayName="01 - CONFIG" projectFiles="true">
-        </logicalFolder>
-        <logicalFolder name="02 - LIN_MNG"
-                       displayName="02 - LIN_MNG"
-                       projectFiles="true">
-          <itemPath>01 - SRC/02 - LIN_MNG/LIN_mng.c</itemPath>
-        </logicalFolder>
-        <logicalFolder name="03 - UTILS" displayName="03 - UTILS" projectFiles="true">
-          <itemPath>01 - SRC/03 - UTILS/Utils.c</itemPath>
-        </logicalFolder>
-        <logicalFolder name="04 - CAN_MNG"
-                       displayName="04 - CAN_MNG"
-                       projectFiles="true">
-          <itemPath>01 - SRC/04 - CAN_MNG/CAN_mng.c</itemPath>
-        </logicalFolder>
-        <logicalFolder name="05 - VERSION"
-                       displayName="05 - VERSION"
-                       projectFiles="true">
-          <itemPath>01 - SRC/05 - VERSION/Version.c</itemPath>
-        </logicalFolder>
-        <logicalFolder name="06 - SYSTEM" displayName="06 - SYSTEM" projectFiles="true">
-          <itemPath>01 - SRC/06 - SYSTEM/Task_mng.c</itemPath>
-          <itemPath>01 - SRC/06 - SYSTEM/Scheduler.c</itemPath>
-          <itemPath>01 - SRC/06 - SYSTEM/SystemTicks.c</itemPath>
-        </logicalFolder>
-        <logicalFolder name="07 - APP" displayName="07 - APP" projectFiles="true">
-          <itemPath>01 - SRC/07 - APP/App.c</itemPath>
-        </logicalFolder>
-        <logicalFolder name="08 - CLI" displayName="08 - CLI" projectFiles="true">
-          <itemPath>01 - SRC/08 - CLI/cli.c</itemPath>
-        </logicalFolder>
-        <itemPath>01 - SRC/main.c</itemPath>
+      <logicalFolder name="APP" displayName="APP" projectFiles="true">
+        <itemPath>Source/APP/App.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="CAN_MNG" displayName="CAN_MNG" projectFiles="true">
+        <itemPath>Source/CAN_MNG/CAN_mng.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="CONFIG" displayName="CONFIG" projectFiles="true">
+      </logicalFolder>
+      <logicalFolder name="LIN_MNG" displayName="LIN_MNG" projectFiles="true">
+        <itemPath>Source/LIN_MNG/LIN_mng.c</itemPath>
       </logicalFolder>
       <logicalFolder name="MCC Generated Files"
                      displayName="MCC Generated Files"
@@ -125,6 +92,18 @@
         <itemPath>mcc_generated_files/can1.c</itemPath>
         <itemPath>mcc_generated_files/can2.c</itemPath>
       </logicalFolder>
+      <logicalFolder name="SYSTEM" displayName="SYSTEM" projectFiles="true">
+        <itemPath>Source/SYSTEM/Scheduler.c</itemPath>
+        <itemPath>Source/SYSTEM/SystemTicks.c</itemPath>
+        <itemPath>Source/SYSTEM/Task_mng.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="UTILS" displayName="UTILS" projectFiles="true">
+        <itemPath>Source/UTILS/Utils.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="VERSION" displayName="VERSION" projectFiles="true">
+        <itemPath>Source/VERSION/Version.c</itemPath>
+      </logicalFolder>
+      <itemPath>Source/main.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -136,6 +115,8 @@
   <sourceRootList>
     <Elem>01 - SRC</Elem>
     <Elem>02 - LINKER</Elem>
+    <Elem>Source</Elem>
+    <Elem>Linker</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -297,7 +278,7 @@
       <C30Global>
         <property key="combine-sourcefiles" value="false"/>
         <property key="common-include-directories"
-                  value="01 - SRC;01 - SRC\01 - CONFIG;01 - SRC\02 - LIN_MNG;01 - SRC\03 - UTILS;01 - SRC\04 - CAN_MNG;01 - SRC\05 - VERSION;01 - SRC\06 - SYSTEM;01 - SRC\07 - APP"/>
+                  value="Source\APP;Source\CAN_MNG;Source\CLI;Source\CONFIG;Source\LIN_MNG;Source\SYSTEM;Source\UTILS;Source\VERSION;mcc_generated_files"/>
         <property key="dual-boot-partition" value="0"/>
         <property key="fast-math" value="false"/>
         <property key="generic-16-bit" value="false"/>

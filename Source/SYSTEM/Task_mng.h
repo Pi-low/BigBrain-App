@@ -1,19 +1,18 @@
-/* 
- * @file    Scheduler.h
+/** 
+ * @file    Task_mng.h
  * @author  Nello Chommanivong
- * @date    14 février 2023, 14:32
+ * @date    14 février 2023, 14:10
  * 
  */
 
-#ifndef SCHEDULER_H
-#define	SCHEDULER_H
+#ifndef TASK_MNG_H
+#define	TASK_MNG_H
 
 /******************************************************************************
  * Includes
  *****************************************************************************/
-#include <xc.h>
-#include "../01 - CONFIG/Config.h"
-#include "../01 - CONFIG/Types.h"
+#include "Config.h"
+#include "Types.h"
 
 /******************************************************************************
  * Definitions and macros
@@ -30,7 +29,10 @@
 /******************************************************************************
  * Public function prototypes
  *****************************************************************************/
-void Scheduler_mng(void);
+void Task_5ms(void);
+void Task_10ms(void);
+void Task_100ms(void);
+void Task_1000ms(void);
 
-#endif	/* SCHEDULER_H */
+#endif	/* TASK_MNG_H */
 

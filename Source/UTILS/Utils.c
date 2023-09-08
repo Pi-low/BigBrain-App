@@ -16,7 +16,7 @@
  */
 
 /**
- * @file    LIN_mng.c
+ * @file    Utils.c
  * @author  Nello Chommanivong
  * @date    February 13, 2023, 11:11 PM
  * 
@@ -28,100 +28,51 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include "../01 - CONFIG/Config.h"
-#include "../01 - CONFIG/Types.h"
-#include "LIN_mng.h"
+#include "Config.h"
+#include "Types.h"
+#include "Utils.h"
+
+cli_t g_TsCliDef;
 
 /******************************************************************************
  * Private variable definitions
  *****************************************************************************/
-static uint8_t spu8LinRxBuffer[10];
-static uint8_t su8ByteCnt;
-//static tsLinFrame stsLinFrame_Registered[NB_LIN_FRAMES];
 
 /******************************************************************************
  * Private function prototypes
  *****************************************************************************/
-static void LIN_SendPayload(tsLinFrame *FptsFrame);
-void LIN_CbRxMng(void);
 
 /******************************************************************************
  * Public APIs & functions
  *****************************************************************************/
-void LIN_Init(void)
+void Utils_Init(void)
 {
-    UART2_SetRxInterruptHandler(&LIN_CbRxMng);
-    su8ByteCnt = 0;
+    g_TsCliDef.println = Utils_PrintStr;
+    g_TsCliDef.cmd_cnt = 2;
+    g_TsCliDef.cmd_tbl = tsCliCommands;
+    cli_init(&g_TsCliDef);
 }
 
-void LIN_EnableHW(void)
+void Utils_PrintStr(char * Fpu8Str)
 {
-    LIN_CS_SetHigh();
-}
-
-void LIN_DisableHW(void)
-{
-    LIN_CS_SetLow();
-}
-
-void LIN_CbRxMng(void)
-{
-    su8ByteCnt++;
-}
-
-void LIN_CbSoF(void)
-{
-    su8ByteCnt = 0;
-}
-
-void LIN_SendHeader(tsLinFrame *FptsFrame)
-{
-    uint8_t pu8Frm[3] = {0};
-    uint8_t u8P0 = 0, u8P1 = 0, u8Cnt;
-    
-    pu8Frm[0] = 0;
-    pu8Frm[1] = 0x55;
-    pu8Frm[2] = FptsFrame->u8ID & 0x3F;
-    
-    u8P0 = (pu8Frm[2] & 1);
-    u8P0 ^= (pu8Frm[2] >> 1) & 1;
-    u8P0 ^= (pu8Frm[2] >> 2) & 1;
-    u8P0 ^= (pu8Frm[2] >> 4) & 1;
-    
-    u8P1 = (pu8Frm[2] >> 1) & 1;
-    u8P1 ^= (pu8Frm[2] >> 3) & 1;
-    u8P1 ^= (pu8Frm[2] >> 4) & 1;
-    u8P1 ^= (pu8Frm[2] >> 5) & 1;
-    u8P1 ^= 1;
-    
-    pu8Frm[2] |= (u8P0 & 1) << 6;
-    pu8Frm[2] |= (u8P1 & 1) << 7;
-   
-    U2STAbits.UTXBRK = 1;
-    for (u8Cnt = 0; u8Cnt < 3; u8Cnt++)
+    uint8_t *pu8Tmp = NULL;
+    pu8Tmp = Fpu8Str;
+    while ((*(pu8Tmp) != '\0') && (pu8Tmp != NULL))
     {
-        UART2_Write(pu8Frm[u8Cnt]);
-    }
-    
-    if (FptsFrame->teType == eLinMaster)
-    {
-        LIN_SendPayload(FptsFrame);
+        UART1_Write((uint8_t) *pu8Tmp);
+        pu8Tmp++;
     }
 }
+
+void Utils_PrintStrSize(const char * Fpu8Str, uint32_t Fu32Len)
+{
+    uint32_t u32Cnt = 0;
+    for (u32Cnt = 0; u32Cnt < Fu32Len; u32Cnt++)
+    {
+        UART1_Write((uint8_t) *(Fpu8Str + u32Cnt));
+    }
+}
+
 /******************************************************************************
  * Private functions
  *****************************************************************************/
-void LIN_SendPayload(tsLinFrame *FptsFrame)
-{
-    uint8_t u8Checksum = 0;
-    uint8_t u8Cnt = 0;
-    
-    for (u8Cnt = 0; u8Cnt < FptsFrame->u8Length; u8Cnt++)
-    {
-        UART2_Write(FptsFrame->pu8Data[u8Cnt]);
-        u8Checksum += FptsFrame->pu8Data[u8Cnt];
-    }
-    
-    u8Checksum = ~(u8Checksum) + 1;
-    UART2_Write(u8Checksum);
-}

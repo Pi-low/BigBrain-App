@@ -16,51 +16,49 @@
  */
 
 /**
- * @file    SystemTicks.c
+ * @file    CAN_mng.c
  * @author  Nello Chommanivong
- * @date    14 février 2023, 15:10
+ * @date    February 13, 2023, 10:35 PM
  * 
  */
 
 /******************************************************************************
  * Includes
  *****************************************************************************/
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
 #include <xc.h>
-#include "../01 - CONFIG/Config.h"
-#include "../01 - CONFIG/Types.h"
-#include "SystemTicks.h"
+#include "Config.h"
+#include "Types.h"
+#include "App.h"
+#include "CAN_mng.h"
 
 /******************************************************************************
  * Private variable definitions
  *****************************************************************************/
-static uint32_t su32SysTick;
 
 /******************************************************************************
- * Private funtion prototypes
+ * Private function prototypes
  *****************************************************************************/
-static void SystemTicks_TimerCallback(void);
 
 /******************************************************************************
  * Public APIs & functions
  *****************************************************************************/
-void SystemTicks_Init(void)
-{
-    TMR1_SetInterruptHandler(&SystemTicks_TimerCallback);
-    TMR1_Start();
-}
 
-uint32_t SystemTicks_Get(void)
+/**
+ * 
+ */
+void CAN_mng_Init(void)
 {
-    return su32SysTick;
+    CAN1_TransmitEnable();
+    CAN2_TransmitEnable();
+    
+    CAN1_ReceiveEnable();
+    CAN2_ReceiveEnable();
+    //CAN1_MODE_SetLow();
+    //CAN2_MODE_SetLow();
+    ODCAbits.ODCA9 = 1;
+    ODCCbits.ODCC3 = 1;
 }
 
 /******************************************************************************
  * Private functions
  *****************************************************************************/
-void SystemTicks_TimerCallback(void)
-{
-    su32SysTick++;
-}

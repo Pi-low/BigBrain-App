@@ -49,8 +49,8 @@
 #include <stdint.h>
 #include <stddef.h>
 #include "xc.h"
-#include "../01 - SRC/08 - CLI/cli.h"
-#include "../01 - SRC/03 - UTILS/Utils.h"
+#include "cli.h"
+#include "Utils.h"
 #include "uart1.h"
 
 /**

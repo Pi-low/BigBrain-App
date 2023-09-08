@@ -1,26 +1,43 @@
-/** 
- * @file    Task_mng.h
+/**
+ * @file    LIN_mng.h
  * @author  Nello Chommanivong
- * @date    14 février 2023, 14:10
+ * @date    February 13, 2023, 11:14 PM
  * 
  */
 
-#ifndef TASK_MNG_H
-#define	TASK_MNG_H
+#ifndef LIN_MNG_H
+#define	LIN_MNG_H
 
 /******************************************************************************
  * Includes
  *****************************************************************************/
-#include "../01 - CONFIG/Config.h"
-#include "../01 - CONFIG/Types.h"
+#include <stdint.h>
+#include "Config.h"
+#include "Types.h"
 
 /******************************************************************************
  * Definitions and macros
  *****************************************************************************/
+#define NB_LIN_FRAMES (2)
+#define LIN_FRAME_TIMEOUT (8) // <- ms
 
 /******************************************************************************
  * Type definitions
  *****************************************************************************/
+typedef enum
+{
+    eLinSlave = 0,
+    eLinMaster
+} teLinType;
+
+typedef struct
+{
+    teLinType teType;
+    uint8_t u8ID;
+    uint8_t pu8Data[8];
+    uint8_t u8Length;
+    uint32_t u32Timeout;
+} tsLinFrame;
 
 /******************************************************************************
  * Extern/global variables
@@ -29,10 +46,10 @@
 /******************************************************************************
  * Public function prototypes
  *****************************************************************************/
-void Task_5ms(void);
-void Task_10ms(void);
-void Task_100ms(void);
-void Task_1000ms(void);
-
-#endif	/* TASK_MNG_H */
+void LIN_EnableHW(void);
+void LIN_DisableHW(void);
+void LIN_SendHeader(tsLinFrame *FptsFrame);
+void LIN_CbSoF(void);
+void LIN_CbRxMng(void);
+#endif	/* LIN_MNG_H */
 

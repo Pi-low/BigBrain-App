@@ -18,22 +18,22 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../../mcc_generated_files/system.h"
-#include "../../mcc_generated_files/clock.h"
-#include "../../mcc_generated_files/pin_manager.h"
-#include "../../mcc_generated_files/system_types.h"
-#include "../../mcc_generated_files/reset.h"
-#include "../../mcc_generated_files/watchdog.h"
-#include "../../mcc_generated_files/interrupt_manager.h"
-#include "../../mcc_generated_files/traps.h"
-#include "../../mcc_generated_files/dma.h"
-#include "../../mcc_generated_files/adc1.h"
-#include "../../mcc_generated_files/tmr1.h"
-#include "../../mcc_generated_files/uart1.h"
-#include "../../mcc_generated_files/uart2.h"
-#include "../../mcc_generated_files/can_types.h"
-#include "../../mcc_generated_files/can1.h"
-#include "../../mcc_generated_files/can2.h"
+#include "system.h"
+#include "clock.h"
+#include "pin_manager.h"
+#include "system_types.h"
+#include "reset.h"
+#include "watchdog.h"
+#include "interrupt_manager.h"
+#include "traps.h"
+#include "dma.h"
+#include "adc1.h"
+#include "tmr1.h"
+#include "uart1.h"
+#include "uart2.h"
+#include "can_types.h"
+#include "can1.h"
+#include "can2.h"
 
 /******************************************************************************
  * Definitions and macros

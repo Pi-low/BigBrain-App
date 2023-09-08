@@ -12,8 +12,8 @@
  * Includes
  *****************************************************************************/
 #include <stdint.h>
-#include "../01 - CONFIG/Config.h"
-#include "../01 - SRC/08 - CLI/cli.h"
+#include "Config.h"
+#include "cli.h"
 
 extern cli_t g_TsCliDef;
 

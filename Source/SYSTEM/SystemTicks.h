@@ -1,43 +1,28 @@
-/* 
- * @file    App.h
+/** 
+ * @file    SystemTicks.h
  * @author  Nello Chommanivong
- * @date    14 février 2023, 16:42
+ * @date 14 février 2023, 15:29
  * 
  */
 
-#ifndef APP_H
-#define	APP_H
+#ifndef SYSTEMTICKS_H
+#define	SYSTEMTICKS_H
 
 /******************************************************************************
  * Includes
  *****************************************************************************/
 #include <xc.h>
-#include "../01 - CONFIG/Config.h"
-#include "../01 - CONFIG/Types.h"
+#include "Config.h"
+#include "Types.h"
+#include "SystemTicks.h"
 
 /******************************************************************************
  * Definitions and macros
  *****************************************************************************/
-/* Wrap CAN Tx functions */
-#define DmVehicleCanTx(prio, msg) CAN1_Transmit(prio, msg)
-#define DmSeatCanTx(prio, msg) CAN2_Transmit(prio, msg)
-
-#define DmVehicleCanRx(msg) CAN1_Receive(msg)
-#define DmSeatCanRx(msg) CAN2_Receive(msg)
-
-#define APP_RX_FRAME_TIMEOUT (250) //ms
 
 /******************************************************************************
  * Type definitions
  *****************************************************************************/
-enum
-{
-    eCAN_TX_VEHICLE = 0,
-    eCAN_RX_VEHICLE,
-    eCAN_TX_SEAT,
-    eCAN_RX_SEAT,
-    eFrameNumber
-};
 
 /******************************************************************************
  * Extern/global variables
@@ -46,11 +31,8 @@ enum
 /******************************************************************************
  * Public function prototypes
  *****************************************************************************/
-void App_Init(void);
-void App_CbOnCanVehicleRx(void);
-void App_CbOnCanSeatRx(void);
-void App_RunTask10ms(void);
-void App_RunTask1000ms(void);
+void SystemTicks_Init(void);
+uint32_t SystemTicks_Get(void);
 
-#endif	/* APP_H */
+#endif	/* SYSTEMTICKS_H */
 

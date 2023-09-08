@@ -1,19 +1,19 @@
-/**
- * @file    CAN_mng.h
+/* 
+ * @file    Scheduler.h
  * @author  Nello Chommanivong
- * @date    February 13, 2023, 11:17 PM
+ * @date    14 février 2023, 14:32
  * 
  */
 
-#ifndef CAN_MNG_H
-#define	CAN_MNG_H
+#ifndef SCHEDULER_H
+#define	SCHEDULER_H
 
 /******************************************************************************
  * Includes
  *****************************************************************************/
-#include <stdint.h>
-#include "../01 - CONFIG/Config.h"
-#include "../01 - CONFIG/Types.h"
+#include <xc.h>
+#include "Config.h"
+#include "Types.h"
 
 /******************************************************************************
  * Definitions and macros
@@ -30,7 +30,7 @@
 /******************************************************************************
  * Public function prototypes
  *****************************************************************************/
-void CAN_mng_Init(void);
+void Scheduler_mng(void);
 
-#endif	/* CAN_MNG_H */
+#endif	/* SCHEDULER_H */
 
